@@ -1,0 +1,3 @@
+Welcome to the second edition of Pro Git. The first edition was published over four years ago now. Since then a lot has changed and yet many important things have not. While most of the core commands and concepts are still valid today as the Git core team is pretty fantastic at keeping things backward compatible, there have been some significant additions and changes in the community surrounding Git. The second edition of this book is meant to address those changes and update the book so it can be more helpful to the new user.
+				When I wrote the first edition, Git was still a relatively diicult to use and
+barely adopted tool for the harder core hacker. It was starting to gain steam in

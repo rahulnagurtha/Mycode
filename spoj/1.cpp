@@ -1,0 +1,1 @@
+#include<cstdio>typedef long long LL;LL f(LL n){return(n==1||n==0)?1:f(n-1)*n;}LL main(){LL t,m;scanf("%lld",&t);while(t--){scanf("%lld",&m);printf("%lld\n",f(2*m)/(f(m)*f(m)));}}
