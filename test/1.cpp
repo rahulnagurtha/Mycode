@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -22,69 +28,29 @@ using namespace std;
 #define SS                      second
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
-#define box(a,b)                ((a*b>=0)?((a/b)):((a%b==0)?(a/b):(a/b-1)))
-#define rem(a,b)                (a-(box(a,b))*b)
 #define ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
-#define rem1(a,b)               ((a<0)?(((a%b)+b)%b):(a%b))
-#define MOD                     1000000007
+#define rem(a,b)                ((a<0)?(((a%b)+b)%b):(a%b))
+#define MOD                     1000000007LL
 
-typedef long long int LL;
+typedef long long int ll;
 typedef pair<int,int> PII;
-typedef pair<LL,LL> PLL;
+typedef pair<ll,ll> PLL;
 typedef vector<int> VI;
-typedef vector<LL> VL;
+typedef vector<ll> VL;
 typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-int n,m,k,in,out,T,X,cur,timestamp,X1,X2;
-deque<PII> Q;
-map<PII,int> deleted;
-map<PII,int>::iterator it;
-PII one;
-bool visited[100005];
-VOVI graph(100005);
-VOII edges;
-
-
 int main()
 {
-	fill(visited,false);
-    si3(n,m,k);
-    for (int i = 0; i < m; ++i) {
-    	si2(in,out);
-    	graph[in].pb(out);
-    	graph[out].pb(in);
-    	if(in > out) edges.pb(mp(in,out));
-    	else edges.pb(mp(out,in));
+    VI a;
+    int b = 7,c = 6;
+    for (int i = 0; i < 5; ++i) {
+        a.pb(i);
     }
-    for (int i = 0; i < k; ++i) {
-    	si2(T,X);
-    	deleted[edges[X-1]] = T;
-    }
-    Q.pb(mp(1,0));
-    visited[1] = true;
-    while(!Q.empty()) {
-    	one = Q.front();
-    	Q.pop_front();
-    	timestamp = one.SS;
-    	cur = one.FF;
-    	if(cur == n) {
-    		pi(timestamp);
-    		return 0;
-    	}
-    	for (int i = 0; i < graph[cur].size(); ++i) {
-    		X1 = max(cur,graph[cur][i]);
-    		X2 = min(cur,graph[cur][i]);	
-    		it = deleted.find(mp(X1,X2));
-    		if( ( it != deleted.end() ) && (it->SS <= timestamp) ) continue;
-			if(!visited[graph[cur][i]]) {
-				Q.push_back(mp(graph[cur][i],timestamp+1));
-				visited[graph[cur][i]] = true;
-			}
-    	}
-    }
-    printf("-1\n");
+    cout << a << endl;
+    debug(b,c);
+    debug(a);
     return 0;
 }
