@@ -44,6 +44,9 @@ typedef vector<VI> VOVI;
 
 int main()
 {
+    PII one;
+    one.FF = 10;
+    one.SS = 20;
     VI a;
     int b = 7,c = 6;
     for (int i = 0; i < 5; ++i) {
@@ -52,5 +55,6 @@ int main()
     cout << a << endl;
     debug(b,c);
     debug(a);
+    debug(one);
     return 0;
 }
