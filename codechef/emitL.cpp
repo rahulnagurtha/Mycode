@@ -3,6 +3,7 @@
 using namespace std;
 
 
+
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
@@ -43,36 +44,23 @@ int main()
     // freopen("in.txt", "r", stdin);
     cin >> t ;
     while(t--) {
-        int m,n,in,out,weight,a,b,dist[10005];
-        vector<VOII> graph(10005);
-        bool explored[10005];
-        priority_queue<PII, VOII, greater<PII> > Q;
-        PII temp;
-        for (int i = 0; i < 10005; ++i) dist[i] = INT_MAX;
-        fill(explored,false);
-        si2(n,m);
-        for (int i = 0; i < m; ++i) {
-            si3(out,in,weight);
-            graph[out].pb(mp(in,weight));
-        }
-        si2(a,b);
-        Q.push(mp(0,a));
-        dist[a] = 0;
-        while(!Q.empty()) {
-            temp = Q.top();
-            Q.pop();
-            if(explored[temp.SS]) continue;
-            if(temp.SS == b) break;
-            explored[temp.SS] = true;
-            for (int i = 0; i < graph[temp.SS].size(); ++i) {
-                if(dist[temp.SS] + graph[temp.SS][i].SS < dist[graph[temp.SS][i].FF]) {
-                    dist[graph[temp.SS][i].FF] = dist[temp.SS] + graph[temp.SS][i].SS;
-                    Q.push(mp(dist[graph[temp.SS][i].FF],graph[temp.SS][i].FF));
-                }
-            }
-        }
-        if(dist[b] == INT_MAX) printf("NO\n");
-        else printf("%d\n",dist[b]);
+    	int a[30] = {0};
+    	string inp;
+    	cin >> inp;
+    	for (int i = 0; i < inp.size(); ++i) {
+    		a[inp[i]-'A']++;
+    	}
+    	if(inp.size() < 8) {
+    		printf("NO\n");
+    	}
+    	else if(inp.size() == 9) {
+    		if(a['L'-'A'] == 2 && a['T'-'A'] == 2 && a['I'-'A'] == 2 && a['E'-'A'] == 1 && a['M'-'A'] == 2) printf("YES\n");
+    		else printf("NO\n");
+    	}
+    	else {
+    		if(a['L'-'A'] >= 2 && a['T'-'A'] >= 2 && a['I'-'A'] >= 2 && a['E'-'A'] >= 2 && a['M'-'A'] >= 2) printf("YES\n");
+    		else printf("NO\n");
+    	}
     }
     return 0;
 }

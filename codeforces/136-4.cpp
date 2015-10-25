@@ -22,10 +22,9 @@ using namespace std;
 #define SS                      second
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
-#define ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
+#define Ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
 #define rem(a,b)                ((a<0)?(((a%b)+b)%b):(a%b))
 #define MOD                     1000000007LL
-#define INF                     2000000007
 
 typedef long long int ll;
 typedef pair<int,int> PII;
@@ -37,55 +36,80 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-PII tmp;
-int E,V,u,v,w,s,t;
-bool explored[100005];
-vector<vector<PII> > graph(100005);
-VI dist(100005,INF),parent(100005,-1);
-priority_queue<PII, VOII, greater<PII> > Q;
+struct node {
+	int l,r,num;
+}query[100005];
+
+int n,m,a[100005],ans[100005],cnt[100005],bsize,curans,curL,curR;
 
 
-void init() {
-    fill(explored,false);
-    dist[s] = 0;
-    Q.push(mp(0,s));
-    explored[s] = true;
-    return;
+bool cmp(struct node one,struct node two) {
+	if(Ceil(one.l,bsize) == Ceil (two.l,bsize)) return one.r < two.r;
+	return Ceil(one.l,bsize) < Ceil (two.l,bsize);
 }
 
 
+void init() {
+	curans = 0;
+	curL = 1;
+	curR = 1;
+	if(a[1] <= n) {
+		cnt[a[1]]++;
+		if(cnt[a[1]] == a[1]) curans++;
+	}
+	sort(query,query + m,cmp);
+	return;
+}
+
+inline void add(int cur) {
+	if(a[cur] > n) return;
+	if(cnt[a[cur]] == a[cur]) curans--;
+	cnt[a[cur]]++;
+	if(cnt[a[cur]] == a[cur]) curans++;
+	return;
+}
+
+inline void remove(int cur) {
+	if(a[cur] > n) return;
+	if(cnt[a[cur]] == a[cur]) curans--;
+	cnt[a[cur]]--;
+	if(cnt[a[cur]] == a[cur]) curans++;
+	return;
+}
+
 int main()
 {
-    si2(E,V);
-    for (int i = 0; i < E; ++i) {
-        si3(u,v,w);
-        graph[u].pb(mp(v,w));
+    si2(n,m);
+    bsize = ceil(sqrt(m));
+    for (int i = 1; i <= n; ++i) {
+    	si(a[i]);
     }
-    si2(s,t);
+    for (int i = 0; i < m; ++i) {
+    	si2(query[i].l,query[i].r);
+    	query[i].num = i;
+    }
     init();
-    while(!Q.empty()) {
-        tmp = Q.top();
-        cout << tmp.SS << tmp.FF << endl;
-        Q.pop();
-        if( tmp.SS == t || tmp.FF == INF) break;
-        if(explored[tmp.SS]) continue;
-        explored[tmp.SS] = true;
-        for (int i = 0; i < graph[tmp.SS].size(); ++i) {
-            if(dist[tmp.SS] + graph[tmp.SS][i].SS < dist[graph[tmp.SS][i].FF]) {
-                parent[graph[tmp.SS][i].FF] = tmp.SS;
-                dist[graph[tmp.SS][i].FF] = dist[tmp.SS] + graph[tmp.SS][i].SS;
-                Q.push(mp(dist[graph[tmp.SS][i].FF],graph[tmp.SS][i].FF));
-            }
-        }
-    }
-    if(dist[t] == INF) {
-        printf("NO\n");
-        return 0;
-    }
-    printf("%d\n",dist[t]);
-    for (int i = t; i != s ; i = parent[i]) {
-        printf("%d ",parent[i]);
-    }
-    printf("\n");
+	for (int i = 0; i < m; ++i) {
+		while(curL > query[i].l) {
+			curL--;
+			add(curL);
+		}
+		while(curR < query[i].r) {
+			curR++;
+			add(curR);
+		}
+		while(curL < query[i].l) {
+			remove(curL);
+			curL++;
+		}
+		while(curR > query[i].r) {
+			remove(curR);
+			curR--;
+		}
+		ans[query[i].num] = curans;
+	}
+	for (int i = 0; i < m; ++i) {
+		pi(ans[i]);
+	}
     return 0;
 }

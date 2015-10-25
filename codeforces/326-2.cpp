@@ -37,42 +37,35 @@ typedef vector<VI> VOVI;
 
 
 
+set<ll> data;
+set<ll>::iterator it;
+
+void primeFactors(ll n)
+{
+    ll ans = 1;
+    while (n%2 == 0)
+    {
+        data.insert(2);
+        n = n/2;
+    }
+    for (ll i = 3; i <= (ll)sqrt(n); i = i+2)
+    {
+        while (n%i == 0)
+        {
+            data.insert(i);
+            n = n/i;
+        }
+    }
+    if (n > 2)
+        data.insert(n);
+    for (it=data.begin(); it!=data.end(); ++it) ans = ans*(*it);
+    cout << ans;
+}
+ 
 int main()
 {
-    int t;
-    // freopen("in.txt", "r", stdin);
-    cin >> t ;
-    while(t--) {
-        int m,n,in,out,weight,a,b,dist[10005];
-        vector<VOII> graph(10005);
-        bool explored[10005];
-        priority_queue<PII, VOII, greater<PII> > Q;
-        PII temp;
-        for (int i = 0; i < 10005; ++i) dist[i] = INT_MAX;
-        fill(explored,false);
-        si2(n,m);
-        for (int i = 0; i < m; ++i) {
-            si3(out,in,weight);
-            graph[out].pb(mp(in,weight));
-        }
-        si2(a,b);
-        Q.push(mp(0,a));
-        dist[a] = 0;
-        while(!Q.empty()) {
-            temp = Q.top();
-            Q.pop();
-            if(explored[temp.SS]) continue;
-            if(temp.SS == b) break;
-            explored[temp.SS] = true;
-            for (int i = 0; i < graph[temp.SS].size(); ++i) {
-                if(dist[temp.SS] + graph[temp.SS][i].SS < dist[graph[temp.SS][i].FF]) {
-                    dist[graph[temp.SS][i].FF] = dist[temp.SS] + graph[temp.SS][i].SS;
-                    Q.push(mp(dist[graph[temp.SS][i].FF],graph[temp.SS][i].FF));
-                }
-            }
-        }
-        if(dist[b] == INT_MAX) printf("NO\n");
-        else printf("%d\n",dist[b]);
-    }
+    ll n;
+    cin >> n;
+    primeFactors(n);
     return 0;
 }
