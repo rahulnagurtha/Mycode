@@ -2,6 +2,14 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
+
+
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -36,43 +44,51 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+ll fast_exp[18];
+
+
+ll sigDigit(ll input)
+{
+    ll digits =  log10(input) + 1;
+    return input /fast_exp[digits-1];
+}
+
+ll trimlast(ll a) {
+	ll digits =  log10(a) + 1;
+	return a - sigDigit(a)*(fast_exp[digits-1]) ;
+}
+
+ll retsum(ll a) {
+	ll ans = 0;
+	if(a == 0) return 0;
+	ll digits = log10(a) + 1;
+	ll sig = sigDigit(a);
+	if(digits >= 2) ans = (digits-1)*45*sig*(fast_exp[digits-2]) + (fast_exp[digits-1])*( (sig*(sig-1))/2);
+	else ans = (sig*(sig+1))/2;
+	return ans;
+
+}
+
+ll calc(ll a) {
+	if(a <= 0) return 0;
+	ll ans = 0;
+	ll digits = log10(a) + 1;
+	ll sig = sigDigit(a);
+	ll last = trimlast(a);
+	if(digits ==  1) return (a*(a+1))/2;
+	ans +=  retsum(sig*fast_exp[digits-1]) + sig*(last+1) + calc(last);
+	return ans;
+}
 
 int main()
 {
-    int t;
-    // freopen("in.txt", "r", stdin);
-    cin >> t ;
-    while(t--) {
-        int m,n,in,out,weight,a,b,dist[10005];
-        vector<VOII> graph(10005);
-        bool explored[10005];
-        priority_queue<PII, VOII, greater<PII> > Q;
-        PII temp;
-        for (int i = 0; i < 10005; ++i) dist[i] = INT_MAX;
-        fill(explored,false);
-        si2(n,m);
-        for (int i = 0; i < m; ++i) {
-            si3(out,in,weight);
-            graph[out].pb(mp(in,weight));
-        }
-        si2(a,b);
-        Q.push(mp(0,a));
-        dist[a] = 0;
-        while(!Q.empty()) {
-            temp = Q.top();
-            Q.pop();
-            if(explored[temp.SS]) continue;
-            if(temp.SS == b) break;
-            explored[temp.SS] = true;
-            for (int i = 0; i < graph[temp.SS].size(); ++i) {
-                if(dist[temp.SS] + graph[temp.SS][i].SS < dist[graph[temp.SS][i].FF]) {
-                    dist[graph[temp.SS][i].FF] = dist[temp.SS] + graph[temp.SS][i].SS;
-                    Q.push(mp(dist[graph[temp.SS][i].FF],graph[temp.SS][i].FF));
-                }
-            }
-        }
-        if(dist[b] == INT_MAX) printf("NO\n");
-        else printf("%d\n",dist[b]);
+	fast_exp[0] = 1;
+	for (int i = 1; i < 18; ++i) fast_exp[i] = (10LL)*fast_exp[i-1];
+    while(1) {
+    	ll a,b;
+    	cin >> a >> b;
+    	if(a == -1 && b == -1) break;
+    	cout << calc(b) - calc(a-1)<< endl; 
     }
     return 0;
 }

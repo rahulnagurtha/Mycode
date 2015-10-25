@@ -38,15 +38,3 @@ public:
 	}
 	
 };
-
-
-
-int main() {
-	int n;
-	cin >> n ;
-	NumberofFiboCalls test;
-	vector<int> v = test.fiboCallsMade(n);
-	printf("returning %d\n",v.size());
-	// cout << v[0] << " " << v[1] << endl ;
-	return 0;
-}

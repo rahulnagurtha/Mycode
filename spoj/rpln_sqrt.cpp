@@ -3,6 +3,7 @@
 using namespace std;
 
 
+
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
@@ -22,7 +23,7 @@ using namespace std;
 #define SS                      second
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
-#define ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
+#define Ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
 #define rem(a,b)                ((a<0)?(((a%b)+b)%b):(a%b))
 #define MOD                     1000000007LL
 
@@ -36,43 +37,53 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int a[100005];
+int block[321];
+
 
 int main()
 {
     int t;
-    // freopen("in.txt", "r", stdin);
+    int cnt = 0;
     cin >> t ;
     while(t--) {
-        int m,n,in,out,weight,a,b,dist[10005];
-        vector<VOII> graph(10005);
-        bool explored[10005];
-        priority_queue<PII, VOII, greater<PII> > Q;
-        PII temp;
-        for (int i = 0; i < 10005; ++i) dist[i] = INT_MAX;
-        fill(explored,false);
-        si2(n,m);
-        for (int i = 0; i < m; ++i) {
-            si3(out,in,weight);
-            graph[out].pb(mp(in,weight));
-        }
-        si2(a,b);
-        Q.push(mp(0,a));
-        dist[a] = 0;
-        while(!Q.empty()) {
-            temp = Q.top();
-            Q.pop();
-            if(explored[temp.SS]) continue;
-            if(temp.SS == b) break;
-            explored[temp.SS] = true;
-            for (int i = 0; i < graph[temp.SS].size(); ++i) {
-                if(dist[temp.SS] + graph[temp.SS][i].SS < dist[graph[temp.SS][i].FF]) {
-                    dist[graph[temp.SS][i].FF] = dist[temp.SS] + graph[temp.SS][i].SS;
-                    Q.push(mp(dist[graph[temp.SS][i].FF],graph[temp.SS][i].FF));
-                }
-            }
-        }
-        if(dist[b] == INT_MAX) printf("NO\n");
-        else printf("%d\n",dist[b]);
+    	int n,q,lblock,rblock,bsize,bnum,l,r,ans;
+    	cnt++;
+    	printf("Scenario #%d:\n",cnt);
+    	si2(n,q);
+    	bsize = ceil(sqrt(n));
+    	for (int i = 1; i <= n; ++i) si(a[i]);
+    	for (int i = 1; i <= 320; ++i) block[i] = INT_MAX;
+    	for (int i = 1; i <= n; ++i) {
+    		bnum = Ceil(i,bsize);
+    		block[bnum] = min(block[bnum],a[i]);
+    	}
+    	for (int i = 0; i < q; ++i) {
+    		si2(l,r);
+    		lblock = Ceil(l,bsize);
+    		rblock = Ceil(r,bsize);
+    		ans = INT_MAX;
+    		if(lblock == rblock) {
+    			for (int i = l; i <= r; ++i) {
+    				ans = min(ans,a[i]);
+    			}
+    			printf("%d\n",ans);
+    		}
+    		else {
+    			while(l%bsize != 1) {
+    				ans = min(ans,a[l]);
+    				l++;
+    			}
+    			while(r%bsize != 0) {
+    				ans = min(ans,a[r]);
+    				r--;
+    			}
+    			lblock = Ceil(l,bsize);
+	    		rblock = Ceil(r,bsize);
+    			for (int i = lblock; i <= rblock; ++i) ans = min(ans,block[i]);
+    			printf("%d\n",ans);
+    		}
+    	}
     }
     return 0;
 }

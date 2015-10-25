@@ -35,44 +35,39 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+ll n,m,a[1000005],sum[1000005];
 
+void preprocess() {
+	sort(a+1,a+n+1);
+	for (int i = 1; i <= n; ++i) sum[i] = a[i] + sum[i-1];
+	return;
+}
+
+
+ll bsearch_again(ll l,ll r,ll h) {
+	assert(l <= r);
+	if(l == r) return l;
+	ll mid = (l + r)/2;
+	if(a[mid] > h) return bsearch_again(l,mid,h);
+	else return bsearch_again(mid+1,r,h);
+}
+
+ll bsearch(ll l,ll r) {
+	assert(l >= r);
+	if(l == r) return l;
+	ll mid = (l+r)/2 + (l+r)%2;
+	ll canget,here;
+	here = bsearch_again(1,n,mid);
+	canget = sum[n] - sum[here - 1] - mid*(n - here + 1);
+	if(canget >= m) return bsearch(l,mid);
+	else return bsearch(mid-1,r);
+}
 
 int main()
 {
-    int t;
-    // freopen("in.txt", "r", stdin);
-    cin >> t ;
-    while(t--) {
-        int m,n,in,out,weight,a,b,dist[10005];
-        vector<VOII> graph(10005);
-        bool explored[10005];
-        priority_queue<PII, VOII, greater<PII> > Q;
-        PII temp;
-        for (int i = 0; i < 10005; ++i) dist[i] = INT_MAX;
-        fill(explored,false);
-        si2(n,m);
-        for (int i = 0; i < m; ++i) {
-            si3(out,in,weight);
-            graph[out].pb(mp(in,weight));
-        }
-        si2(a,b);
-        Q.push(mp(0,a));
-        dist[a] = 0;
-        while(!Q.empty()) {
-            temp = Q.top();
-            Q.pop();
-            if(explored[temp.SS]) continue;
-            if(temp.SS == b) break;
-            explored[temp.SS] = true;
-            for (int i = 0; i < graph[temp.SS].size(); ++i) {
-                if(dist[temp.SS] + graph[temp.SS][i].SS < dist[graph[temp.SS][i].FF]) {
-                    dist[graph[temp.SS][i].FF] = dist[temp.SS] + graph[temp.SS][i].SS;
-                    Q.push(mp(dist[graph[temp.SS][i].FF],graph[temp.SS][i].FF));
-                }
-            }
-        }
-        if(dist[b] == INT_MAX) printf("NO\n");
-        else printf("%d\n",dist[b]);
-    }
+	cin >> n >> m;
+    for (int i = 1; i <= n; ++i) cin >> a[i];
+	preprocess();
+	cout << bsearch(a[n]-1,0) << endl;
     return 0;
 }
