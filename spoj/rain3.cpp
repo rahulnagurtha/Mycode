@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -22,71 +28,73 @@ using namespace std;
 #define SS                      second
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
-#define box(a,b)                ((a*b>=0)?((a/b)):((a%b==0)?(a/b):(a/b-1)))
-#define rem(a,b)                (a-(box(a,b))*b)
 #define ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
-#define rem1(a,b)               ((a<0)?(((a%b)+b)%b):(a%b))
-#define MOD                     1000000007
+#define rem(a,b)                ((a<0)?(((a%b)+b)%b):(a%b))
+#define MOD                     1000000007LL
 
-typedef long long int LL;
+typedef long long int ll;
 typedef pair<int,int> PII;
-typedef pair<LL,LL> PLL;
+typedef pair<ll,ll> PLL;
 typedef vector<int> VI;
-typedef vector<LL> VL;
+typedef vector<ll> VL;
 typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-int n,temp;
-LL dp[(1 << 20) + 5];
-bool like[21][21];
-
-int NumberOfSetBits(int i)
-{
-    int ans = 0;
-    while(i > 0) {
-        ans += (i%2); 
-        i = i/2;
-    }
-    return ans;
-}
-
+ll s[1500005],t[1500005],a[1500005];
+ll n,m;
 
 void init() {
-	fill(dp,-1);
-	dp[0] = 1;
+	a[0] = 0;
+	for (int i = 1; i <= n; ++i) s[i] = (78901 + 31*s[i-1])%699037;
+	for (int i = 1; i <= n; ++i) t[i] = (23456 + 64*t[i-1])%2097151;
+	for (int i = 1; i <= n; ++i) a[i] = (ll)(s[i]%100 + 1)*(ll)(t[i]%100 + 1);
 	return;
 }
 
-LL instance(int mask) {
-    assert(mask >= 0);
-	LL tmp;
-	if(dp[mask] != -1) return dp[mask];
-	dp[mask] = 0;
-	tmp = (LL)NumberOfSetBits(mask);
-	for (int i = 0; i < n; ++i) {
-		if(like[tmp][i+1] == true &&  ((mask&(1 << i)) != 0) ) {
-			dp[mask] += instance(mask-(1 << i));
-		}
+void calculate() {
+	ll Qsum = 0;
+	ll tocheck = n;
+	ll ans = n,tmp = 0;
+	ll ryt = 1;
+	for (ll i = n; i >= 1; --i) {
+		tmp += a[i];
+		if(tmp > m) break;
+		tocheck = i-1;
 	}
-	return dp[mask];
+	for (ll i = 1; i <= tocheck; ++i) {
+		if(a[i] > m) {
+			ans = 0;
+			break;
+		}
+		Qsum = Qsum-a[i-1];
+		if(i-1 != ryt-1) {
+			Qsum = Qsum-a[ryt-1];
+			ryt--;
+		}
+		while(1) {
+			if(Qsum + a[ryt] <= m) {
+				Qsum += a[ryt];
+				ryt++;
+			}
+			else break;
+		}
+		ans = min(ryt-i,ans);
+	}
+	ans = min(ans,n-tocheck+1);
+	printf("%d\n",ans);
+	return;
 }
-
 
 int main()
 {
-    int t;
-    cin >> t ;
-    while(t--) {
-    	si(n);
+    int test;
+    si(test);
+    while(test--) {
+    	slli2(s[0],t[0]);
+    	slli2(n,m);
     	init();
-    	for (int i = 1; i <= n; ++i) {
-    		for (int j = 1; j <= n; ++j) {
-    			si(temp);
-    			like[i][j] = temp;
-    		}
-    	}
-    	plli(instance( (1 << n)-1));
+    	calculate();
     }
     return 0;
 }

@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -22,54 +28,50 @@ using namespace std;
 #define SS                      second
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
-#define box(a,b)                ((a*b>=0)?((a/b)):((a%b==0)?(a/b):(a/b-1)))
-#define rem(a,b)                (a-(box(a,b))*b)
 #define ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
-#define rem1(a,b)               ((a<0)?(((a%b)+b)%b):(a%b))
-#define MOD                     1000000007
+#define rem(a,b)                ((a<0)?(((a%b)+b)%b):(a%b))
+#define MOD                     1000000007LL
 
-typedef long long int LL;
+typedef long long int ll;
 typedef pair<int,int> PII;
-typedef pair<LL,LL> PLL;
+typedef pair<ll,ll> PLL;
 typedef vector<int> VI;
-typedef vector<LL> VL;
+typedef vector<ll> VL;
 typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-int n,temp;
-LL dp[(1 << 20) + 5];
-bool like[21][21];
 
-int NumberOfSetBits(int i)
-{
-    int ans = 0;
-    while(i > 0) {
-        ans += (i%2); 
-        i = i/2;
-    }
-    return ans;
-}
+string a;
+int dp[205],zero[205],one[205];
+int n;
 
-
-void init() {
-	fill(dp,-1);
-	dp[0] = 1;
-	return;
-}
-
-LL instance(int mask) {
-    assert(mask >= 0);
-	LL tmp;
-	if(dp[mask] != -1) return dp[mask];
-	dp[mask] = 0;
-	tmp = (LL)NumberOfSetBits(mask);
-	for (int i = 0; i < n; ++i) {
-		if(like[tmp][i+1] == true &&  ((mask&(1 << i)) != 0) ) {
-			dp[mask] += instance(mask-(1 << i));
+void solve() {
+	dp[0] = zero[0] = one[0] = 0;
+	for (int i = 1; i <= n; ++i) {
+		if(a[i] == '0') {
+			zero[i] = zero[i-1] + 1;
+			one[i] = one[i-1];
+		}
+		else {
+			zero[i] = zero[i-1];
+			one[i] = one[i-1] + 1;
 		}
 	}
-	return dp[mask];
+	for (int i = 1; i <= n; ++i) {
+		if(zero[i] < one[i]) dp[i] = i;
+		else dp[i] = 0;	
+	}
+	for (int i = 1; i <= n; ++i) {
+		for (int j = i-1; j >= 1; --j) {
+			if(zero[i] - zero[j] < one[i] - one[j]) {
+				dp[i] = max(dp[i],dp[j] + i - j);
+			}
+			else dp[i] = max(dp[i],dp[j]);
+		}
+	}
+	printf("%d\n",dp[n]);
+	return;
 }
 
 
@@ -78,15 +80,11 @@ int main()
     int t;
     cin >> t ;
     while(t--) {
-    	si(n);
-    	init();
-    	for (int i = 1; i <= n; ++i) {
-    		for (int j = 1; j <= n; ++j) {
-    			si(temp);
-    			like[i][j] = temp;
-    		}
-    	}
-    	plli(instance( (1 << n)-1));
+    	a = ' ';
+    	string tmp;
+    	cin >> n >> tmp;
+    	a += tmp;
+    	solve();
     }
     return 0;
 }
