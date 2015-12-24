@@ -1,18 +1,11 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-
-
-
-// main code begins now
+#include <stdio.h>
 
 int main()
 {
-    int t;
-    char p = '1';
-    t = int(p-48);
-    printf("%d\n",t+2 );
-
-    return 0;
+	while(1) {
+		int n;
+		scanf("%d",&n);
+		if(n == 42) break;
+		printf("%d\n",n);
+	}
 }

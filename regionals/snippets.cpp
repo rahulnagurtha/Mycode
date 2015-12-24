@@ -45,19 +45,6 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
-    	}
-    }
-    cout << ans << endl;
+    
     return 0;
 }

@@ -12,12 +12,12 @@ struct debugger dbg;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%I64d",&i)
-#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
-#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%I64d\n",i)
+#define plli(i)                 printf("%lld\n",i)
 
 #define FOR(i,a,b)              for(int i=a;i<b;i++)
 #define REP(i,n)                FOR(i,0,n)
@@ -42,22 +42,54 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int n,m;
+bool visited[1002];
+VOVI graph(1003);
+
+
+void dfs(int pre) {
+	visited[pre] = true;
+	for (int i = 0; i < graph[pre].size(); ++i) {
+		if(!visited[graph[pre][i]]) dfs(graph[pre][i]);
+	}
+	return;
+}
+
+void init() {
+	for (int i = 0; i < 1001; ++i) {
+		graph[i].clear();
+	}
+}
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
+    int t;
+    // freopen("in.txt", "r", stdin);
+    cin >> t ;
+    while(t--) {
+    	int temp,ans = 0;
+    	si(n);
+    	for (int i = 1; i <= n; ++i) {
+    		si(m);
+    		for (int j = 0; j < m; ++j) {
+    			si(temp);
+    			graph[temp].pb(i);
+    		}
     	}
-    	else {
-    		m -= 2;
-    		n--;
+    	for (int i = 1; i <= n; ++i) {
+    		fill(visited,false);
+    		visited[i] = true;
+    		dfs(i);
+    		ans++;
+    		for (int j = 1; j <= n; ++j) {
+    			if(!visited[j]) {
+    				ans--;
+    				break;
+    			}
+    		}
     	}
+    	pi(ans);
+    	init();
     }
-    cout << ans << endl;
     return 0;
 }

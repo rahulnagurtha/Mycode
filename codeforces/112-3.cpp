@@ -41,22 +41,25 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
+int cnt[1000006],cum[1000005];
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
-    	}
+	int n;
+	ll ans = 0;
+    string a;
+    cin >> n;
+    cin >> a;
+    cnt[0] = 1;
+    if(a[0] == '1') cum[0] = 1;
+    else cum[0] = 0;
+    for (int i = 1; i < a.size(); ++i) {
+    	if(a[i] == '1') cum[i] = cum[i-1] + 1;
+    	else cum[i] = cum[i-1];
+    }
+    for (int i = 0; i < a.size(); ++i) {
+    	if(cum[i]-n >= 0) ans += cnt[cum[i]-n];
+    	cnt[cum[i]]++;
     }
     cout << ans << endl;
     return 0;

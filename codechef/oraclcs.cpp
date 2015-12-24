@@ -12,12 +12,12 @@ struct debugger dbg;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%I64d",&i)
-#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
-#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%I64d\n",i)
+#define plli(i)                 printf("%lld\n",i)
 
 #define FOR(i,a,b)              for(int i=a;i<b;i++)
 #define REP(i,n)                FOR(i,0,n)
@@ -41,23 +41,34 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+int n;
+string a[101];
+
 
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
+    int t;
+    cin >> t ;
+    while(t--) {
+    	int cnt_a,cnt_b,min_a = 101,min_b = 101;
+    	cin >> n ;
+    	int ans = 1000;
+    	for (int i = 0; i < n; ++i) {
+    		cin >> a[i];
     	}
-    	else {
-    		m -= 2;
-    		n--;
+    	for (int i = 0; i < n; ++i) {
+    		cnt_a = 0;
+    		cnt_b = 0;
+    		for (int j = 0; j < a[i].size(); ++j) {
+    			if(a[i][j] == 'a') cnt_a++;
+    			else cnt_b++; 
+    		}
+    		min_a = min(min_a,cnt_a);
+    		min_b = min(min_b,cnt_b);
     	}
+    	ans = min(min_a,min_b);
+    	cout << ans << endl;
     }
-    cout << ans << endl;
     return 0;
 }

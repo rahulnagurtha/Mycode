@@ -43,21 +43,63 @@ typedef vector<VI> VOVI;
 
 
 
-int main()
-{
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
+int data[501][501],cnt[100001],x,y,xx,yy,pre_x,pre_y;
+string a;
+
+void init() {
+	fill(cnt,0);
+	for (int i = 1; i <= x; ++i) {
+    	for (int j = 1; j <= y; ++j) {
+    		data[i][j] = a.size();
     	}
     }
-    cout << ans << endl;
+    data[xx][yy] = 0;
+    return;
+}
+
+
+bool valid(char dir) {
+	if(dir == 'U' && pre_x == 1) return false;
+	else if(dir == 'D' && pre_x == x) return false;
+	else if(dir == 'L' && pre_y == 1) return false;
+	else if(dir == 'R' && pre_y == y) return false;
+	return true;
+}
+
+void update(char dir) {
+	if(dir == 'U') pre_x--;
+	else if(dir == 'D') pre_x++;
+	else if(dir == 'L') pre_y--;
+	else pre_y++;
+	return;
+}
+
+
+int main()
+{
+	SYNC;
+    cin >> x >> y >> xx >> yy;
+    init();
+    cin >> a;
+    pre_x = xx;
+    pre_y = yy;
+    init();
+    for (int i = 0; i < a.size(); ++i) {
+    	if(valid(a[i])) {
+    		update(a[i]);
+    		if(data[pre_x][pre_y] > i + 1) data[pre_x][pre_y] = i + 1;
+    	}
+    }
+    for (int i = 1; i <= x; ++i) {
+    	for (int j = 1; j <= y; ++j) {
+    		// cout << data[i][j] << " ";
+    		cnt[data[i][j]]++;
+    	}
+    	// printf("\n");
+    }
+    for (int i = 0; i <= a.size(); ++i) {
+    	cout << cnt[i] << " ";
+    }
+    printf("\n");
     return 0;
 }

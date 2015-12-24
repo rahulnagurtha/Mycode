@@ -41,21 +41,32 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
+int pre_zero[200001],pre_one[200001];
+ll ans;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
+	ans = 0;
+    string a,b;
+    cin >> a >> b;
+    pre_zero[0] = 0;
+    pre_one[0] = 0;
+    for (int i = 0; i < b.size(); ++i) {
+    	if(b[i] == '0') {
+    		pre_zero[i+1] = pre_zero[i];
+    		pre_one[i+1] = pre_one[i] + 1;
     	}
     	else {
-    		m -= 2;
-    		n--;
+    		pre_zero[i+1] = pre_zero[i] + 1;
+    		pre_one[i+1] = pre_one[i];
+    	}
+    }
+    for (int i = 0; i < a.size(); ++i) {
+    	if(a[i] == '0') {
+    		ans = ans + pre_zero[b.size()-a.size()+1+i] - pre_zero[i];
+    	}
+    	else {
+    		ans = ans + pre_one[b.size()-a.size()+1+i] - pre_one[i];
     	}
     }
     cout << ans << endl;

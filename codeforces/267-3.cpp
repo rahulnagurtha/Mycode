@@ -41,23 +41,26 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+ll dp[5001][5001];
+
+ll pre[5001],n,m,k,tmp;
 
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
+	pre[0] = 0;
+    slli3(n,m,k);
+    for (ll i = 1; i <= n; ++i) {
+    	slli(tmp);
+    	pre[i] = pre[i-1] + tmp;
+    }
+    for (ll i = 0; i <= 5000; ++i) dp[i][0] = 0;
+    for (ll i = 1; i <= n; ++i) {
+    	for (ll j = 1; j <= k; ++j) {
+    		if(j*m > i) dp[i][j] = -1;
+    		else dp[i][j] = max(dp[i-1][j] , pre[i] - pre[i-m] + dp[i-m][j-1]);
     	}
     }
-    cout << ans << endl;
+    plli(dp[n][k]);
     return 0;
 }

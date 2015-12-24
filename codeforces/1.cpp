@@ -3,7 +3,7 @@
 using namespace std;
 
 #ifndef ONLINE_JUDGE
-#include "debug.hpp"
+#include "../debug.hpp"
 struct debugger dbg;
 #else 
 #define debug(args...)              // Just strip off all debug tokens
@@ -45,6 +45,8 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-	
+	char a;
+	a = (char)(48);
+	cout << a << endl;
     return 0;
 }

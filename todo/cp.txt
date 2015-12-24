@@ -1,0 +1,54 @@
+To Improve & Focus on:
+
+	-> Dp problem solving skills.
+	-> Graph problem solving skills.
+	-> Learn New Data Structures.
+	-> String Algorithms.
+	-> Keep improving Math skills.
+	-> Number theory + Counting + probability.
+	-> Problem solving approach.
+
+
+Codechef Long Challenge:
+	
+	Pros:
+		-> Do not under-estimate Codechef Long Challenge.
+		-> Its really a good platform to improve your Maths skills,problem solving abilities.
+		-> Improves the approach to the solution.
+		-> Also improves implementation skills.
+
+	Tasks:
+		-> Give your best for 10 days,it doesn't matter how many you solve in a contest.
+		-> Do atleast 3 long contests.
+
+
+
+Codeforces:
+	
+	Pro's:
+		-> Very good place to improve your math skills,graph theory,implementation,data structures.
+		-> Place to learn new data structures.
+
+	Tasks:
+		-> Take part in as many contests as possible.
+		-> Don't concentrate much on rating.
+		-> In the end what matters is how much you have learnt,not the rating.
+		-> In a contest,You should be able to do 4 div-2 problems easily by the end of 6th sem.
+		-> Practise well on this uring your leisure.
+
+
+Spoj:
+	
+	Pro's:
+		-> Good place to learn classic problems.
+		-> Place to learn new data structures.
+
+	Tasks:
+		-> Try Crossing 150 problems by the end of 6th sem.
+		-> Learn new data structures from this.
+
+
+Topcoder:
+	
+	Tasks:
+		-> Master Dp and problem solving skills from this.

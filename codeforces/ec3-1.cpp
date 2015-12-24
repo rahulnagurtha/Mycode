@@ -45,18 +45,16 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
+    int n,m,a[105],ans = 0;
     cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
-    	}
+    for (int i = 0; i < n; ++i) {
+    	cin >> a[i];
+    }
+    sort(a,a+n);
+    for (int i = n-1; i >= 0 ; --i) {
+    	ans++;
+    	if(a[i] >= m) break;
+    	m = m - a[i];
     }
     cout << ans << endl;
     return 0;

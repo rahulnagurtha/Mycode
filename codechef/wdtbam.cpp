@@ -12,12 +12,12 @@ struct debugger dbg;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%I64d",&i)
-#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
-#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%I64d\n",i)
+#define plli(i)                 printf("%lld\n",i)
 
 #define FOR(i,a,b)              for(int i=a;i<b;i++)
 #define REP(i,n)                FOR(i,0,n)
@@ -45,19 +45,27 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
+    int t;
+    // freopen("in.txt", "r", stdin);
+    cin >> t ;
+    while(t--) {
+    	int n,correct = 0,wrong = 0,w[1005],ans = -1;
+    	string a,b;
+    	cin >> n ;
+    	cin >> a ;
+    	cin >> b ;
+    	for (int i = 0; i < n + 1; ++i) cin >> w[i];
+    	for (int i = 0; i < a.size(); ++i) {
+    		if(a[i] == b[i]) correct++;
+    		else wrong++;
     	}
-    	else {
-    		m -= 2;
-    		n--;
+    	if(wrong > 0) {
+    		for (int i = 0; i <= correct; ++i) {
+    			ans = max(ans,w[i]);
+    		}
+    		cout << ans << endl;
     	}
+    	else cout << w[n] << endl;
     }
-    cout << ans << endl;
     return 0;
 }

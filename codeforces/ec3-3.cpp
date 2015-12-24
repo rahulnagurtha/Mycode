@@ -45,19 +45,23 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
+    int n,ans = 0,a[100005],sum = 0,peak,cnt = 0;
+    si(n);
+    for (int i = 0; i < n; ++i) {
+    	si(a[i]);
+    	sum += a[i];
+    }
+    peak = ceil(sum,n);
+    for (int i = 0; i < n; ++i) {
+    	if(a[i]-peak > 0) {
+    		ans += a[i] - peak;
+    		a[i] = peak;
     	}
     }
-    cout << ans << endl;
+    for (int i = 0; i < n; ++i) {
+    	if(a[i] == peak) cnt++;
+    }
+    if(sum%n != 0 && cnt > rem(sum,n)) ans += cnt - rem(sum,n);
+    pi(ans);
     return 0;
 }

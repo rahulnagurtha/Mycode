@@ -1,64 +1,70 @@
-#include <bits/stdc++.h>
+struct tree {
+    int mi;
+    int ma;
+    int sum;
+};
 
-using namespace std;
+tree seg[500001];
+int a[100001];
 
-int search(vector<int> A, int B) {
-    vector<int>::iterator low;
-    if(A.size() <= 4) {
-        for (int i = 0; i < A.size(); ++i) {
-            if(A[i] == B) return i;
-        }
-        return -1;
+// Build with array [i,j]
+
+void build(int node,int i,int j) {
+    if(i>j) return;
+    if(i==j) {                        
+        seg[node].mi = seg[node].ma = seg[node].sum = a[i];
+        return;
     }
-    int lft = 0,ryt = A.size()-1,mid,pos,ans,flag = 0;
-    while(ryt - lft >= 4) {
-        if(A[lft] < A[ryt]) {
-            flag = 1;
-            pos = lft;
-            break;
-        }
-        mid = (lft + ryt)/2;
-        if(A[mid] < A[lft]) ryt = mid;
-        else lft = mid+1;
-    }
-    if(flag == 0) {
-        pos = lft;
-        for (int i = lft; i <= ryt; ++i) {
-            if(A[pos] > A[i]) {
-                pos = i;
-            }
-        }
-    }
-    printf("%d\n",pos);
-    if(pos == 0) {
-        low = lower_bound(A.begin(),A.end(),B);
-        if((low- A.begin()) <= pos-1 && A[low-A.begin()] == B) {
-            return low-A.begin();
-        }
-        return -1;
-    }
-    low = lower_bound(A.begin(),A.begin() + pos,B);
-    if((low- A.begin()) <= pos-1 && A[low-A.begin()] == B) {
-        return low-A.begin();
-    }
-    low = lower_bound(A.begin() + pos,A.end(),B);
-    if((low- A.begin()) <= A.size()-1 && A[low-A.begin()] == B) {
-        return low-A.begin();
-    }
-    return -1;
+    build(node*2,i,(i+j)/2);
+    build(node*2+1,1+(i+j)/2,j);
+    seg[node].ma = max(seg[node*2].ma,seg[1+node*2].ma);
+    seg[node].mi = min(seg[node*2].mi,seg[1+node*2].mi);
+    seg[node].sum = seg[node*2].sum + seg[1+node*2].sum;
+    return;
 }
 
+int qmin(int node,int a,int b,int i,int j) {
+    if(a > b || a > j || b < i) return 2147483645;
+    if(a >= i && b <= j) return seg[node].mi;
+    int q1,q2;
+    q1 = qmin(node*2, a, (a+b)/2, i, j);
+    q2 = qmin(1+node*2, 1+(a+b)/2, b, i, j);
+    int res = min(q1, q2);
+    return res;
+}
 
-// main code begins now
+int qmax(int node,int a,int b,int i,int j) {
+    if(a > b || a > j || b < i) return -2147483645;
+    if(a >= i && b <= j) return seg[node].ma;
+    int q1,q2;
+    q1 = qmax(node*2, a, (a+b)/2, i, j);
+    q2 = qmax(1+node*2, 1+(a+b)/2, b, i, j);
+    int res = max(q1, q2);
+    return res;
+}
 
-int main()
-{
-    int k;
-    vector<int> v;
-    for (int i = 0; i < 5; ++i){
-        cin >> k ;
-        v.push_back(k);
+int qsum(int node,int a,int b,int i,int j) {
+    if(a > b || a > j || b < i) return 0;
+    if(a >= i && b <= j) return seg[node].sum;
+    int q1,q2;
+    q1 = qsum(node*2, a, (a+b)/2, i, j);
+    q2 = qsum(1+node*2, 1+(a+b)/2, b, i, j);
+    int res = q1 + q2;
+    return res;
+}
+
+void upd(int node,int pos,int i,int j,int val) {
+    if(i>j) return;
+    if(i==j&&i==pos) {            
+        seg[node].ma = seg[node].mi = seg[node].sum = val;
+        return;
     }
-    cout << search(v,1) << endl;
-    return 0;
+    if(i<=pos&&j>=pos) {
+        upd(2*node,pos,i,(i+j)/2,val);
+        upd(2*node+1,pos,(i+j)/2 + 1,j,val);
+        seg[node].ma = max(seg[2*node].ma,seg[2*node+1].ma);
+        seg[node].mi = min(seg[2*node].mi,seg[2*node+1].mi);
+        seg[node].sum = seg[2*node].sum + seg[1+2*node].sum;
+        return;
+    }
 }

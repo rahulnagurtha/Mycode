@@ -42,22 +42,50 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int n;
+
+VOII a;
+int dp[100005];
+
+
+int search(int lft,int ryt,int target) {
+	assert(lft <= ryt);
+
+	if(ryt - lft == 1) {
+		if(a[lft].FF >= target ) return -1;
+		if(a[ryt].FF >= target ) return lft;
+		else return ryt;
+	}
+	if(lft == ryt) {
+		if(a[lft].FF >= target) return -1;
+		else return lft;
+	}
+	int mid = (lft+ryt)/2;
+	if(a[mid].FF >= target) return search(lft,mid-1,target);
+	else return search(mid,ryt,target);
+}
+
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
-    	}
+	int tmp,one,two;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+    	cin >> one >> two;
+    	a.pb(mp(one,two));
     }
-    cout << ans << endl;
+    sort(a.begin(),a.end());
+    dp[0] = 1;
+    for (int i = 1; i < n; ++i) {
+    	tmp = search(0,i-1,a[i].FF-a[i].SS);
+    	if(tmp != -1) dp[i] = dp[tmp] + 1;
+    	else dp[i] = 1;
+    }
+    int ans = -1;
+    for (int i = 0; i < n; ++i) {
+    	ans = max(ans,dp[i]);
+    }
+    ans = ans + 1;
+    cout << n + 1 - ans << endl;
     return 0;
 }

@@ -45,17 +45,22 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
+    int n,s,f,t,flr[1001],ans,cur;
+    cin >> n >> s;
+    fill(flr,0);
+    for (int i = 0; i < n; ++i) {
+    	cin >> f >> t;
+    	flr[f] = max(t,flr[f]);
+    }
+    ans = flr[s] + 1;
+    cur = s-1;
+    while(cur != 0) {
+    	if(flr[cur] == 0 || flr[cur] <= ans) {
+    		ans++;
+    		cur--;
     	}
-    	else {
-    		m -= 2;
-    		n--;
+    	else if(flr[cur] > ans) {
+    		ans++;
     	}
     }
     cout << ans << endl;

@@ -42,22 +42,38 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int a[100001],b[100001],n,sz,max_pos[100001],max_sofar[100001];
+
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
-    	}
+	int ans = 0,tmp1,tmp2;
+	si(n);
+	for (int i = 0; i < n; ++i) {
+		si(a[i]);
+		b[i] = a[i];
+	}
+    sort(b, b+n);
+    sz = unique(b, b + n) - b;
+    for (int i = 0; i < n; i++) a[i] = lower_bound(b, b + sz, a[i]) - b;
+    
+    //calculate max_sofar array
+    max_sofar[0] = a[0];
+    for (int i = 1; i < n; ++i) {
+    	max_sofar[i] = max(max_sofar[i-1],a[i]);
     }
-    cout << ans << endl;
+
+    //calculate max_pos
+    for (int i = 0; i < n; ++i) max_pos[a[i]] = i;
+   	for (int i = 1; i < sz; ++i) max_pos[i] = max(max_pos[i-1],max_pos[i]);
+
+   	for (int i = 0; i < n; ++i) {
+   		tmp1 = max_sofar[i];
+   		if(tmp1 == 0) ans++;
+   		else {
+   			if(max_pos[tmp1-1] <= i) ans++;
+   		}
+   	}
+   	pi(ans);
     return 0;
 }

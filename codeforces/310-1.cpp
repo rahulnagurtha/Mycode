@@ -45,19 +45,16 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
-    	}
+	stack<char> info;
+    int n;
+    string a;
+    cin >> n ;
+    cin >> a;
+    for (int i = 0; i < a.size(); ++i) {
+    	if(info.empty()) info.push(a[i]);
+    	else if(info.top() != a[i]) info.pop();
+    	else info.push(a[i]);
     }
-    cout << ans << endl;
+    cout << info.size() << endl;
     return 0;
 }

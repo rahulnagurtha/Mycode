@@ -42,20 +42,20 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int a[200005],cnt[11];
 
 int main()
 {
+	fill(cnt,0);
     int n,m,ans = 0;
     cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
-    	}
-    	else {
-    		m -= 2;
-    		n--;
+    for (int i = 0; i < n; ++i) {
+    	cin >> a[i];
+    	cnt[a[i]]++;
+    }
+    for (int i = 1; i <= 9; ++i) {
+    	for (int j = i+1; j <= 10; ++j) {
+    		ans += cnt[i]*cnt[j];
     	}
     }
     cout << ans << endl;

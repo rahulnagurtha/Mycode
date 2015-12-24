@@ -1,56 +1,63 @@
 #include <bits/stdc++.h>
 
-#define scl(t) scanf("%ld",&t)
-#define sc(t) scanf("%d",&t)
-#define max(a,b) (a>=b?a:b)
-#define min(a,b) (a<b?a:b)
-#define ll long long
-#define MOD 1000000007
-#define mp make_pair
-#define pb push_back
-#define lc printf("\n")
-
-
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#   define DEBUG
+#   define TRACE
+#else
+#   define NDEBUG
+#endif
+
+#ifdef DEBUG
+     #define debug(args...)            {cerr<<__FUNCTION__<<":"<<__LINE__<<":";dbg,args; cerr<<endl;}
+#else
+    #define debug(args...)              // Just strip off all debug tokens
+#endif
+
+struct debugger
+{
+    template<typename T> debugger& operator , (const T& v)
+    {
+        cerr<<v<<" ";
+        return *this;
+    }
+} dbg;
 
 
-ll dp[110][110][2];
+#define si(i)                   scanf("%d",&i)
+#define si2(i,j)                scanf("%d %d",&i,&j)
+#define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
+
+#define pi(i)                   printf("%d\n",i)
+#define plli(i)                 printf("%lld\n",i)
+
+
+#define SYNC                    ios_base::sync_with_stdio(0);
+#define mp                      make_pair
+#define FF                      first
+#define SS                      second
+#define pb                      push_back
+#define fill(a,v)               memset(a,v,sizeof a)
+#define ceil(a,b)               ((a%b==0)?(a/b):(a/b+1))
+#define rem(a,b)                ((a<0)?(((a%b)+b)%b):(a%b))
+#define MOD                     1000000007LL
+
+typedef long long int ll;
+typedef pair<int,int> PII;
+typedef pair<ll,ll> PLL;
+typedef vector<int> VI;
+typedef vector<ll> VL;
+typedef vector<PII> VOII;
+typedef vector<PLL> VOLL;
+typedef vector<VI> VOVI;
 
 
 int main()
 {
-
-
-    int t,ind,n,k,i,j,b;
-    ll ans;
-    sc(t);
-    while(t--)
-    {
-        sc(ind);sc(n);sc(k); // taking input
-        for(i=0;i<n;i++)
-            for(j=0;j<=k;j++)
-                for(b=0;b<2;b++)
-                    dp[i][j][b]=0; //initialising the array with all 0
-
-         /* no of ways of constructing a string of length 1 with adjbc()=0 is 1
-             for b=0 and b=1 */
-
-         dp[1][0][0]=dp[1][0][1]=1; //base case
-        for(i=2;i<=n;i++)
-        {
-            for(j=0;j<=k;j++)
-            {
-
-                    dp[i][j][0]=dp[i-1][j][0]+dp[i-1][j][1];
-                    if(j>0)
-                        dp[i][j][1]=dp[i-1][j-1][1];
-                    dp[i][j][1]+=dp[i-1][j][0];
-
-            }
-        }
-        ans=dp[n][k][0]+dp[n][k][1];
-        cout<<ind<<" "<<ans<<endl;
-    }
-
+	
+    return 0;
 }

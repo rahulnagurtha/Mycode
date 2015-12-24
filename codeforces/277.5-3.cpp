@@ -45,19 +45,39 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    int n,m,ans = 0;
-    cin >> n >> m;
-    while(n > 0 && m > 0 && n+m > 2) {
-		ans++;
-    	if(n >= m) {
-    		n -= 2;
-    		m--;
+    int m,s,tmp;
+    string Max,Min;
+    cin >> m >> s;
+    if(s <= 9 && m == 1) {
+    	cout << s << " " << s << endl;
+    }
+    else if(s == 0 && m > 1) {
+    	cout << "-1 -1" << endl;
+    }
+    else if(s > m*9) {
+    	cout << "-1 -1" << endl;
+    }
+    else {
+    	tmp = s;
+    	for (int i = 0; i < m; ++i) {
+    		Max += (char)(48 + min(tmp,9));
+    		tmp = tmp - min(tmp,9);
     	}
-    	else {
-    		m -= 2;
-    		n--;
+    	for (int i = 1; i <= 9; ++i) {
+    		if(s-i <= 9*(m-1)) {
+    			tmp = s-i;
+    			cout << (char)(48+i);
+    			for (int j = 1; j < m; ++j) {
+    				Min += (char)(48 + min(tmp,9));
+    				tmp = tmp - min(tmp,9);
+    			}
+    			for (int j = Min.size()-1; j >= 0; --j) {
+    				cout << Min[j];
+    			}
+    			cout << " " << Max << endl;
+    			break;
+    		}
     	}
     }
-    cout << ans << endl;
     return 0;
 }
