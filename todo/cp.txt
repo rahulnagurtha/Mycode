@@ -52,3 +52,16 @@ Topcoder:
 	
 	Tasks:
 		-> Master Dp and problem solving skills from this.
+
+
+
+
+
+Topics to learn:
+
+1.Graphs
+2.DP
+3.Dp on graphs
+4.Heavy light decomposition
+5.Centroid decomposition
+6.Persistent segment trees
