@@ -44,12 +44,7 @@ int main()
 {
     int t;
     cin >> t ;
-    while(t--) {
-
-    }
-    for (int i = 0; i < ; ++i)
-    {
-    	/* code */
-    }
+    cout << "\n" << t << endl;
+    cout << "hello" << endl;
     return 0;
 }
