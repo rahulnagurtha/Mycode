@@ -64,7 +64,7 @@ int main()
     
     //start of bfs
     while(!layers.empty()) {
-        foo=layers.front();
+        foo = layers.front();
         for (list<int>::iterator it=graph[foo].begin(); it!= graph[foo].end(); ++it) {
             if (status[*it]==false) {
                 status[*it]=true;
