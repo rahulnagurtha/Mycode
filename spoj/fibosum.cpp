@@ -39,9 +39,9 @@ typedef vector<VI> VOVI;
 
 LL n,m,t,final;
 
-LL fastexp(LL b) {
-	LL ans[4],a[4],c[4];
-	ans[0] = ans[3] = 1;
+LL fastexp(LL b) {										//
+	LL ans[4],a[4],c[4];								//
+	ans[0] = ans[3] = 1;								//
 	a[0] = a[1] = a[2] = 1;
 	a[3] = ans[1] = ans[2] = 0;
 	while(b > 0) {
@@ -53,7 +53,7 @@ LL fastexp(LL b) {
 			ans[0] = c[0];
 			ans[1] = c[1];
 			ans[2] = c[2];
-			ans[3] = c[3];
+			ans[3] = c[3]; 
 		}
 		c[0] = ( (a[0]*a[0])% MOD + (a[1]*a[2])% MOD ) % MOD;
 		c[1] = ( (a[0]*a[1])% MOD + (a[1]*a[3])% MOD ) % MOD;

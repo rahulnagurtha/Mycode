@@ -1,26 +1,30 @@
-import string
-digs = string.digits + string.letters
+import itertools
 
-def int2base(x, base):
-  if x < 0: sign = -1
-  elif x == 0: return digs[0]
-  else: sign = 1
-  x *= sign
-  digits = []
-  while x:
-    digits.append(digs[x % base])
-    x /= base
-  if sign < 0:
-    digits.append('-')
-  digits.reverse()
-  return ''.join(digits)
+all_edges = list(itertools.combinations(range(1,8), 2))
+space = []
 
+for x in xrange(1,8):
+  space = space + list(itertools.combinations(all_edges, x))
 
-t = input()
-for x in xrange(0,t):
-  a = raw_input()
-  b = raw_input()
-  l = input()
-  ans = int2base(int(a,7)/int(b,7),7)
-  lft = max(0,len(ans)-l)
-  print ans[lft:]
+print space[101814]
+
+# t = len(space)
+# f = open('bruteout.txt', 'w')
+# f.write(str(t) + '\n')
+
+# for edges in space:
+#   # f.write('7' + ' ' + str(len(edges)) + '\n')
+#   # for edge in edges:
+#   #   f.write(str(edge[0]) + ' ' + str(edge[1]) + '\n')
+#   # f.close()
+#   ans = 0
+#   for x in list(itertools.permutations(range(1,8))):
+#     flag = 0
+#     for y in xrange(6):
+#       if( (tuple((x[y],x[y+1])) in edges) or (tuple((x[y+1],x[y])) in edges)):
+#         flag = 1
+#         break
+#     if flag == 0:
+#       ans += 1
+#   f.write(str(ans) + '\n')
+# f.close()
