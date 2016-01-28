@@ -55,13 +55,57 @@ Topcoder:
 
 
 
-
-
 Topics to learn:
 
-1.Graphs
-2.DP
-3.Dp on graphs
-4.Heavy light decomposition
-5.Centroid decomposition
-6.Persistent segment trees
+
+
+Strings : 
+	KMP, Suffix Arrays, Z Algo, Manacher, Hashing, Tries, Palindromic trees
+
+DP optimisations :
+	1D-1D, CHT, Divide and Conquer
+
+Maths :
+	Mobius Inversion, Stirling Numbers of first kind, Stirling Numbers of second kind, Bell Numbers, Inclusion - Exclusion, FFT, Matrices, Catalan Numbers, Ballot theorem, Linearly Independent equations, Chinese Remainder theorem, Lucas theorem, Baby step giant step, Derangements, Sieve
+
+DP :
+	DP with BIT, DP with bitmasking, DP with strings, Subset Hack, Meet in the middle, DP on trees on nodes, DP on trees on edges, DP on dfs order, DP with matrix expo ( recursive / iterative)
+
+Lemmas :
+	Burnside Lemma,
+
+Game Theory :
+	Nim Game, Grundy Numbers
+
+Graphs : 
+	Bridge Tree, Block Cut tree, Dominator trees, dfs order, in time - out time, Dijsktra, BFS, flood fill, Link Cut trees, Centroid decomp, HLD, Union - Find, Permutation Cycles, articulation points, bridges, 2-SAT,Heavy light decomposition,LCA
+
+Segment Trees / BIT :
+	Segment trees on dfs order, Sgement trees with CHT, Persistant Seg trees
+
+Square Root Decomp :
+	MO's algo, Buffered queries, decomposed blocks
+
+Ordered Trees :
+	Treaps, BST
+
+Flows :
+	Minimum number of edges / nodes to disconnect, Lemma's, Dual of a graph, matrices -> flows
+
+Geometry :
+	Convex Hull, Elementary geometry, Rotating Callipers
+
+Greedy :
+
+
+Practise : 
+	Topcoder srms
+	cf Gyms
+	Last year Regionals
+	Codejam problems
+	Hackercup problems
+	cookoff 4th - 5th
+	hack 101 4th - 5th
+	hackerearth clashes
+	long permuation / strings / geometry problems
+	cf virtuals
