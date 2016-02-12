@@ -39,12 +39,35 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+vector<pair<PLL,int> >points;
+ll n,x,y;
+ll one,two,three;
+ll xone,xtwo,xthree,yone,ytwo,ythree;
 
+bool cmp(pair<PLL,int> a,pair<PLL,int> b) {
+	if(a.FF.FF != b.FF.FF) return a.FF.FF < b.FF.FF;
+	return a.FF.SS < b.FF.SS;
+}
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+    cin >> n;
+    for (int i = 1; i <= n; ++i) {
+    	cin >> x >> y;
+    	points.pb(mp(mp(x,y),i));
+    }
+    sort(points.begin(),points.end(),cmp);
+    xone = points[0].FF.FF;
+    yone = points[0].FF.SS;
+    xtwo = points[1].FF.FF;
+    ytwo = points[1].FF.SS;
+    for (int i = 2; i < n; ++i) {
+    	xthree = points[i].FF.FF;
+    	ythree = points[i].FF.SS;
+    	if(((ytwo-yone)*(xthree-xone)) != ((ythree-yone)*(xtwo-xone))) {
+    		cout << points[0].SS << " " << points[1].SS << " " << points[i].SS << endl;
+    		break;
+    	}
+    }
     return 0;
 }

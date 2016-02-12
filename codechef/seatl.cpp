@@ -12,12 +12,12 @@ struct debugger dbg;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%I64d",&i)
-#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
-#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%I64d\n",i)
+#define plli(i)                 printf("%lld\n",i)
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -39,12 +39,22 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+int row[1000002],column[1000002];
 
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+    int t;
+    cin >> t ;
+    while(t--) {
+    	int n,m;
+    	cin >> n >> m;
+    	for (int i = 1; i <= ; ++i) {
+    		for (int j = 1; j <= ; ++j) {
+    			cin >> a[i][j];
+    		}
+    	}
+    	
+    }
     return 0;
 }

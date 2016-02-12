@@ -2,22 +2,16 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%I64d",&i)
-#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
-#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%I64d\n",i)
+#define plli(i)                 printf("%lld\n",i)
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -39,12 +33,27 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+ll n;
+ll times[100005];
 
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+	ll ans = 0;
+    cin >> n;
+    for (ll i = 0; i < n; ++i) {
+    	cin >> times[i];
+    }
+    sort(times,times+n);
+    ll present = times[0]+1;
+    for (ll i = 1; i < n; ++i) {
+    	// printf("%lld->",present);
+    	if(present >= times[i]) {
+    		present++;
+    	}
+    	else present = times[i]+1;
+    	// printf("%lld\n",present);
+    }
+    cout << present-1 << endl;
     return 0;
 }

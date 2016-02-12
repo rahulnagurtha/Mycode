@@ -1,32 +1,19 @@
-import itertools
+from bs4 import BeautifulSoup
 
-all_edges = list(itertools.combinations(range(1,8), 2))
-space = []
+soup = BeautifulSoup(open("test.html"),'html.parser')
+a = soup.find_all("div",{"class":"commentary-event"})
 
-for x in xrange(1,8):
-	space = space + list(itertools.combinations(all_edges, x))
-
-# t = len(space)
-f = open('bruteout.txt', 'w')
-# f.write(str(t) + '\n')
-
-for edges in space:
-	# f.write('7' + ' ' + str(len(edges)) + '\n')
-	# for edge in edges:
-	# 	f.write(str(edge[0]) + ' ' + str(edge[1]) + '\n')
-	# f.close()
-	ans = 0
-	for x in list(itertools.permutations(range(1,8))):
-		flag = 0
-		for y in xrange(6):
-			if( (tuple((x[y],x[y+1])) in edges) or (tuple((x[y+1],x[y])) in edges)):
-				flag = 1
-				break
-		if flag == 0:
-			ans += 1
-	f.write(str(ans) + '\n')
-f.close()
-
-
-
-		
+for x in a:
+	y = x.find_all("div")
+	if len(y) > 1:
+		print "insert into Commentary values ("
+		print " ".join(str((y[0].text).encode('ascii','ignore')).split()),
+		print ",'",
+		print " ".join(str((y[1].text).encode('ascii','ignore')).split()),
+		print "');"
+	else:
+		print "insert into Commentary values (-1.0"
+		print ", '",
+		print " ".join(str((y[0].text).encode('ascii','ignore')).split()),
+		print "');"
+	print "\n"

@@ -43,8 +43,31 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+    int n,cnt[100],tmp[55][55],outpt;
+    cin >> n;
+    outpt = n;
+    for (int i = 1; i <= n; ++i) {
+    	for (int j = 1; j <= n; ++j) {
+    		cin >> tmp[i][j];
+    	}
+    }
+    for (int i = 1; i <= n; ++i) {
+    	fill(cnt,0);
+    	for (int j = 1; j <= n; ++j) {
+    		cnt[tmp[i][j]]++;
+    	}
+    	bool flag = true;
+    	for (int j = 1; j <= n; ++j) {
+    		if(cnt[j] > 1) {
+    			cout << j << " ";
+    			flag = false;
+    			break;
+    		}
+    	}
+    	if(flag) {
+    		cout << outpt << " ";
+    		outpt--;
+    	}
+    }
     return 0;
 }

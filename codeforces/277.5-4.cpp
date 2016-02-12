@@ -39,12 +39,30 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
+bool graph[3002][3002];
+VOVI adj(3002);
+ll ans;
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+    int n,m,in,out;
+    si2(n,m);
+    for (int i = 0; i < m; ++i) {
+    	si2(in,out);
+    	graph[in][out] = true;
+    	adj[in].pb(out);
+    }
+    for (int i = 1; i <= n; ++i) {
+    	for (int j = 1; j <= n; ++j) {
+    		int tmp = 0;
+    		if(i != j) {
+    			for (int k = 0; k < adj[i].size(); ++k) {
+    				if(graph[adj[i][k]][j]) tmp++;
+	    		}
+    		}
+	    	ans += (ll)(tmp*(tmp-1))/2;
+    	}
+    }
+    plli(ans);
     return 0;
 }

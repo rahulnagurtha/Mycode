@@ -39,12 +39,28 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
+ll ans;
+ll val[27];
+string s;
+ll pref[100005];
+map<ll,ll> tree[26];
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+	SYNC;
+	for (int i = 0; i < 26; ++i) {
+		cin >> val[i];
+	}
+    cin >> s;
+    pref[0] = val[s[0]-'a'];
+    for (int i = 1; i < s.size(); ++i) {
+    	pref[i] = pref[i-1] + val[s[i]-'a'];
+    }
+    tree[s[0]-'a'][pref[0]] = 1;
+    for (int i = 1; i < s.size(); ++i) {
+    	ans += tree[s[i]-'a'][pref[i-1]];
+    	tree[s[i]-'a'][pref[i]]++;
+    }
+    cout << ans << endl;
     return 0;
 }

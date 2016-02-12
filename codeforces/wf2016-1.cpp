@@ -43,8 +43,33 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    map<int,int> Q;
-    printf("hello\n");
-    cout << Q[0] << endl;
+    int n,one,two;
+    deque<int> Q;
+    cin >> n;
+    Q.pb(0);
+    Q.pb(1);
+    for (int i = 1; i < n; ++i) {
+    	Q.pb(1);
+    	while(1) {
+    		one = Q.back();
+	    	Q.pop_back();
+	    	two = Q.back();
+	    	Q.pop_back();
+	    	if(one == two) {
+	    		Q.pb(one+1);
+	    	}
+	    	else {
+	    		Q.pb(two);
+	    		Q.pb(one);
+	    		break;
+	    	}
+    	}
+    }
+    Q.pop_front();
+    while(Q.size() > 0) {
+    	cout << Q.front() << " ";
+    	Q.pop_front();
+    }
+    printf("\n");
     return 0;
 }

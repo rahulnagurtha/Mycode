@@ -1,19 +1,5 @@
-9 9
-caccbcacabccba
-aacbcbcaabacbcbcba
-babccaaacccacbb
-caaabcaacbababbabbb
-abbaccacabacaaaa
-bccbccababcaacb
-caacbcaacbababbabbb
-bcacababbbcaaca
-ccbbcbababbccaab
-bbcbccababcaacb
-aacccbabbacbabacaca
-bbcbcccbabcaacb
-acbacacbcacc
-caaabcaaabacabbabbb
-abbbabaaaba
-aacccbcaabacbcbcba
-abbaccacabbcaaaa
-aaccbbcabbacbcbcba
+4
+-1000000000 -1000000000
+0 0
+999999999 999999999
+1000000000 999999999
