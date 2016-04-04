@@ -40,61 +40,44 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-VOVI graph(10005);
-bool visited[10005],cycle,onstack[10005];
-int incount[10005];
-VI ans;
-int n,m;
+ll dp[4096][100];
 
-void dfs(int cur) {
-	onstack[cur] = true;
-	visited[cur] = true;
-	for (int i = 0; i < graph[cur].size(); ++i) {
-		if(!visited[graph[cur][i]]) dfs(graph[cur][i]);
-		else if(onstack[graph[cur][i]]) cycle = true;
-	}
-	onstack[cur] = false;
+void init() {
+	fill(dp,-1);
+	dp[0][0] = 1;
+	for (int i = 1; i < 100; ++i) dp[0][i] = 0;
 	return;
 }
 
-void topo() {
-	priority_queue<int,VI,greater<int> > Q;
-	for (int i = 1; i <= n; ++i) {
-		if(incount[i] == 0) Q.push(i);
+ll state(ll mask,ll inv) {
+	if(dp[mask][inv] != -1) return dp[mask][inv];
+	VI numbers;
+	int tmp = 1;
+	for (int i = 0; i < 12; ++i) {
+		if(tmp & mask) numbers.pb(i);
+		tmp = tmp << 1;
 	}
-	while(!Q.empty()) {
-		cout << Q.top() << " ";
-		int tmp = Q.top();
-		Q.pop();
-		for (int i = 0; i < graph[tmp].size(); ++i) {
-			incount[graph[tmp][i]]--;
-			if(incount[graph[tmp][i]] == 0) Q.push(graph[tmp][i]);
+	// if(mask == 15) cout << numbers << endl;
+	dp[mask][inv] = 0;
+	for (int i = 0; i < numbers.size(); ++i) {
+		if(inv >= (numbers.size()-i-1)) {
+			// if(mask == 15) printf("%d\n",i);
+			dp[mask][inv] += state(mask - (1 << numbers[i]),inv - (numbers.size()-i-1));
 		}
 	}
-	printf("\n");
-	return;
+	return dp[mask][inv];
 }
+
 
 int main()
 {
-	int out,in;
-	fill(visited,false);
-	fill(onstack,false);
-	cycle = false;
-    si2(n,m);
-    for (int i = 0; i < m; ++i) {
-    	si2(out,in);
-    	incount[in]++;
-    	graph[out].pb(in);
-    }
-    for (int i = 1; i <= n; ++i) {
-    	if(!visited[i]) dfs(i);
-    }
-    if (cycle) {
-    	printf("Sandro fails.\n");
-    }
-    else {
-    	topo();
+	init();
+    int t;
+    si(t);
+    while(t--) {
+    	ll n,k;
+    	slli2(n,k);
+    	plli(state((1 << n)-1,k));
     }
     return 0;
 }

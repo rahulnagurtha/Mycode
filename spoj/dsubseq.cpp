@@ -40,61 +40,24 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-VOVI graph(10005);
-bool visited[10005],cycle,onstack[10005];
-int incount[10005];
-VI ans;
-int n,m;
 
-void dfs(int cur) {
-	onstack[cur] = true;
-	visited[cur] = true;
-	for (int i = 0; i < graph[cur].size(); ++i) {
-		if(!visited[graph[cur][i]]) dfs(graph[cur][i]);
-		else if(onstack[graph[cur][i]]) cycle = true;
-	}
-	onstack[cur] = false;
-	return;
-}
-
-void topo() {
-	priority_queue<int,VI,greater<int> > Q;
-	for (int i = 1; i <= n; ++i) {
-		if(incount[i] == 0) Q.push(i);
-	}
-	while(!Q.empty()) {
-		cout << Q.top() << " ";
-		int tmp = Q.top();
-		Q.pop();
-		for (int i = 0; i < graph[tmp].size(); ++i) {
-			incount[graph[tmp][i]]--;
-			if(incount[graph[tmp][i]] == 0) Q.push(graph[tmp][i]);
-		}
-	}
-	printf("\n");
-	return;
-}
 
 int main()
 {
-	int out,in;
-	fill(visited,false);
-	fill(onstack,false);
-	cycle = false;
-    si2(n,m);
-    for (int i = 0; i < m; ++i) {
-    	si2(out,in);
-    	incount[in]++;
-    	graph[out].pb(in);
-    }
-    for (int i = 1; i <= n; ++i) {
-    	if(!visited[i]) dfs(i);
-    }
-    if (cycle) {
-    	printf("Sandro fails.\n");
-    }
-    else {
-    	topo();
+    int t;
+    cin >> t ;
+    while(t--) {
+    	ll dp[26] = {0};
+    	ll tmp = 0;
+    	ll tmp1;
+    	string inp;
+    	cin >> inp;
+    	for (int i = 0; i < inp.size(); ++i) {
+    		tmp1 = dp[inp[i]-'A'];
+    		dp[inp[i]-'A'] = (tmp + 1)%MOD;
+    		tmp = rem((tmp - tmp1 + dp[inp[i]-'A']),MOD);
+    	}
+    	cout << tmp + 1 << endl;
     }
     return 0;
 }

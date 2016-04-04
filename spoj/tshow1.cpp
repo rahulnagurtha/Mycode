@@ -28,6 +28,7 @@ struct debugger dbg;
 #define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
+#define lmt						1000000000000000LL
 
 typedef long long int ll;
 typedef pair<int,int> PII;
@@ -40,61 +41,61 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-VOVI graph(10005);
-bool visited[10005],cycle,onstack[10005];
-int incount[10005];
-VI ans;
-int n,m;
+ll power[60];
+ll sum[60];
 
-void dfs(int cur) {
-	onstack[cur] = true;
-	visited[cur] = true;
-	for (int i = 0; i < graph[cur].size(); ++i) {
-		if(!visited[graph[cur][i]]) dfs(graph[cur][i]);
-		else if(onstack[graph[cur][i]]) cycle = true;
+void init() {
+	sum[0] = 0;
+	power[0] = 0;
+	power[1] = 2;
+	sum[1] = 2;
+	for (int i = 2; i < 50; ++i) power[i] = (power[i-1] << 1);
+	for (int i = 2; i < 60; ++i) {
+		sum[i] = sum[i-1] + power[i];
+		if(sum[i] > lmt) break;
 	}
-	onstack[cur] = false;
 	return;
 }
 
-void topo() {
-	priority_queue<int,VI,greater<int> > Q;
-	for (int i = 1; i <= n; ++i) {
-		if(incount[i] == 0) Q.push(i);
-	}
-	while(!Q.empty()) {
-		cout << Q.top() << " ";
-		int tmp = Q.top();
-		Q.pop();
-		for (int i = 0; i < graph[tmp].size(); ++i) {
-			incount[graph[tmp][i]]--;
-			if(incount[graph[tmp][i]] == 0) Q.push(graph[tmp][i]);
+PLL findtuple(ll tmp) {
+	PLL ans; //length,number
+	for (int i = 1; i < 60; ++i) {
+		if(sum[i] >= tmp) {
+			ans.FF = i;
+			ans.SS = tmp-sum[i-1];
+			return ans;
 		}
 	}
-	printf("\n");
-	return;
 }
+
+
 
 int main()
 {
-	int out,in;
-	fill(visited,false);
-	fill(onstack,false);
-	cycle = false;
-    si2(n,m);
-    for (int i = 0; i < m; ++i) {
-    	si2(out,in);
-    	incount[in]++;
-    	graph[out].pb(in);
-    }
-    for (int i = 1; i <= n; ++i) {
-    	if(!visited[i]) dfs(i);
-    }
-    if (cycle) {
-    	printf("Sandro fails.\n");
-    }
-    else {
-    	topo();
-    }
+	init();
+	int n;
+	si(n);
+	while(n--) {
+		ll k;
+		slli(k);
+		PLL tmp = findtuple(k);
+		while(1) {
+			if(tmp.FF == 1) {
+				if(tmp.SS == 1) printf("5");
+				else printf("6");
+				break;
+			}
+			if(power[tmp.FF - 1] < tmp.SS) {
+				printf("6");
+				tmp.SS = tmp.SS - power[tmp.FF-1];
+				tmp.FF = tmp.FF-1;
+			}
+			else {
+				printf("5");
+				tmp.FF = tmp.FF-1;
+			}
+		}
+		printf("\n");
+	}    
     return 0;
 }

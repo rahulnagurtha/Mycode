@@ -1,12 +1,9 @@
-globals(a)
-globals(b)
+class test():
+	total = 0
+	def __init__(self):
+		self.total = 10
 
-a = 0
-b = 0
+d = test()
+print d.total
 
-def test():
-	a += 1
-
-test()
-
-print a,b
+		

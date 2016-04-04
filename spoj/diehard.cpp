@@ -2,12 +2,6 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -40,61 +34,30 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-VOVI graph(10005);
-bool visited[10005],cycle,onstack[10005];
-int incount[10005];
-VI ans;
-int n,m;
+ll dp[3][2005][2005];   //fire,water,air
 
-void dfs(int cur) {
-	onstack[cur] = true;
-	visited[cur] = true;
-	for (int i = 0; i < graph[cur].size(); ++i) {
-		if(!visited[graph[cur][i]]) dfs(graph[cur][i]);
-		else if(onstack[graph[cur][i]]) cycle = true;
-	}
-	onstack[cur] = false;
-	return;
-}
 
-void topo() {
-	priority_queue<int,VI,greater<int> > Q;
-	for (int i = 1; i <= n; ++i) {
-		if(incount[i] == 0) Q.push(i);
-	}
-	while(!Q.empty()) {
-		cout << Q.top() << " ";
-		int tmp = Q.top();
-		Q.pop();
-		for (int i = 0; i < graph[tmp].size(); ++i) {
-			incount[graph[tmp][i]]--;
-			if(incount[graph[tmp][i]] == 0) Q.push(graph[tmp][i]);
-		}
-	}
-	printf("\n");
-	return;
+ll s_time(ll health,ll armor,ll pos) {
+	if((health <= 0) || (armor <= 0)) return 0;
+	if(dp[pos][health][armor] != -1) return dp[pos][health][armor];
+	ll ans = 0;
+	if(pos == 0) ans = 1 + max(s_time(health-5,armor-10,1),s_time(health+3,armor+2,2));
+	else if(pos == 1) ans = 1 + max(s_time(health-20,armor+5,0),s_time(health+3,armor+2,2));
+	else ans = 1 + max(s_time(health-20,armor+5,0),s_time(health-5,armor-10,1));
+	dp[pos][health][armor] = ans;
+	return ans;
 }
 
 int main()
 {
-	int out,in;
-	fill(visited,false);
-	fill(onstack,false);
-	cycle = false;
-    si2(n,m);
-    for (int i = 0; i < m; ++i) {
-    	si2(out,in);
-    	incount[in]++;
-    	graph[out].pb(in);
-    }
-    for (int i = 1; i <= n; ++i) {
-    	if(!visited[i]) dfs(i);
-    }
-    if (cycle) {
-    	printf("Sandro fails.\n");
-    }
-    else {
-    	topo();
+	fill(dp,-1);
+    int t;
+    cin >> t ;
+    while(t--) {
+    	ll h,a;
+    	cin >> h >> a;
+    	ll ans = max(s_time(h-20,a+5,0),max(s_time(h-5,a-10,1),s_time(h+3,a+2,2)));
+    	cout << ans << endl;
     }
     return 0;
 }

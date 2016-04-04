@@ -2,28 +2,27 @@
 
 using namespace std;
 
-
-char S[1005],T[1005];
+string S,T;
 int dp[1003][1002];
 
 void initiate() {
-	for (int i = 0; i <= 1001; ++i) {
+	for (int i = 0; i < 1002; ++i) {
 		dp[0][i] = 30*i;
 	}
-	for (int i = 0; i <= 1001; ++i) {
+	for (int i = 0; i < 1002; ++i) {
 		dp[i][0] = 15*i;
 	}
 	return;
 }
 
 void solve() {
-	for (int i = 1; i <= strlen(S); ++i) {
-		for (int j = 1; j <= strlen(T); ++j) {
+	for (int i = 1; i < S.size(); ++i) {
+		for (int j = 1; j < T.size(); ++j) {
 			if(S[i] == T[j]) dp[i][j] = dp[i-1][j-1];
 			else dp[i][j] = min(15+dp[i-1][j],30+dp[i][j-1]);
 		}
 	}
-	printf("%d\n",dp[strlen(S)][strlen(T)]);
+	cout << dp[S.size()-1][T.size()-1] << endl;
 	return;
 }
 
@@ -32,13 +31,16 @@ void solve() {
 
 int main()
 {
-	S[0] = 'z';
-	T[0] = 'z';
 	initiate();
     while(1) {
-    	scanf("%s",S+1);
-    	if(S[1] == '#') break;
-    	scanf("%s",T+1);
+    	string tmp;
+    	S = "z";
+    	T = "z";
+    	cin >> tmp;
+    	if(tmp == "#") break;
+    	S += tmp;
+    	cin >> tmp;
+    	T += tmp;
     	solve();
     }
     return 0;
