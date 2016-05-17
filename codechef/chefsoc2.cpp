@@ -40,53 +40,31 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
-
+ll dp[1005][1005];
 
 int main()
 {
-    int tmp;
-    int one = 1,two = 3,three = 2 ,four = 5,five = 4;
-    //1,2 and 3,4
-    cout << "1" << endl;
-    cout << "1 " << one << endl;
-    cout << "2 " << two << " " << three << endl; 
-    cin >> tmp;
-    if(tmp == 0) {
-        cout << "2" << endl;
-        cout << one << endl;
-        return 0;
-    }
-    if(tmp == -1) {
-        cout << "1" << endl;
-        cout << "1 " << four << endl;
-        cout << "1 " << five << endl;
-        cin >> tmp;
-        if(tmp == 1) {
-            cout << "2" << endl;
-            cout << four << endl;
-            return 0;
-        }
-        if(tmp == -1) {
-            cout << "2" << endl;
-            cout << five << endl;
-            return 0;
-        }
-    }
-    if(tmp == -2) {
-        cout << "1" << endl;
-        cout << "1 " << two << endl;
-        cout << "1 " << three << endl;
-        cin >> tmp;
-        if(tmp == 1) {
-            cout << "2" << endl;
-            cout << two << endl;
-            return 0;
-        }
-        if(tmp == -1) {
-            cout << "2" << endl;
-            cout << three << endl;
-            return 0;
-        }
+    int t;
+    si(t);
+    while(t--) {
+    	ll n,m,s;
+    	ll a[1005];
+    	fill(dp,0);
+    	slli3(n,m,s);
+    	for (int i = 1; i <= m; ++i) {
+    		slli(a[i]);
+    	}
+    	dp[s][0] = 1;
+    	for (int i = 1; i <= m; ++i) {
+    		for (int j = 1; j <= n; ++j) {
+    			if(j-a[i] >= 1) dp[j-a[i]][i] = rem(dp[j-a[i]][i]+dp[j][i-1],MOD);
+    			if(j+a[i] <= n) dp[j+a[i]][i] = rem(dp[j+a[i]][i]+dp[j][i-1],MOD);
+    		}
+    	}
+    	for (int i = 1; i <= n; ++i) {
+    		printf("%lld ",dp[i][m]);
+    	}
+    	printf("\n");
     }
     return 0;
 }
