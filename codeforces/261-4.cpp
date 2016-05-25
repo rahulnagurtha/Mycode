@@ -6,7 +6,7 @@ using namespace std;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%lld",&i)
+#define slli(i)                 scanf("%I64d",&i)
 
 
 #define pi(i)                   printf("%d\n",i)
