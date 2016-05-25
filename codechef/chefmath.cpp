@@ -39,54 +39,56 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+VL fib;
+map<pair<ll,PLL>,ll> data;
 
+void precompute() {
+	int a,b,tmp;
+	a = 1;
+	b = 2;
+	fib.pb(a);
+	while(b <= 1000000000) {
+		fib.pb(b);
+		tmp = b;
+		b = b + a;
+		a = tmp;
+	}
+	return;
+}
+
+
+ll recurse(ll target,ll till,ll chances) {
+	// if (data.find(mp(target,mp(till,chances))) != data.end()) {
+		// return data[mp(target,mp(till,chances))];
+	// }
+	if(chances*fib[till] < target) return 0;
+	ll ans = 0;
+	if(target == fib[till]) {
+		if (chances == 1) ans++;
+		if (till > 0) ans += recurse(target,till-1,chances);
+	}
+	else if (target - fib[till] < 0) {
+		if (till > 0) ans += recurse(target,till-1,chances);
+	}
+	else {
+		if (chances > 1) ans += recurse(target - fib[till],till,chances-1);
+		if(till > 0) ans += recurse(target,till-1,chances);
+	}
+	ans = ans%MOD;
+	// data[mp(target,mp(till,chances))] = ans;
+	return ans;
+}
 
 
 int main()
 {
-    int tmp;
-    int one = 1,two = 3,three = 2 ,four = 5,five = 4;
-    //1,2 and 3,4
-    cout << "1" << endl;
-    cout << "1 " << one << endl;
-    cout << "2 " << two << " " << three << endl; 
-    cin >> tmp;
-    if(tmp == 0) {
-        cout << "2" << endl;
-        cout << one << endl;
-        return 0;
-    }
-    if(tmp == -1) {
-        cout << "1" << endl;
-        cout << "1 " << four << endl;
-        cout << "1 " << five << endl;
-        cin >> tmp;
-        if(tmp == 1) {
-            cout << "2" << endl;
-            cout << four << endl;
-            return 0;
-        }
-        if(tmp == -1) {
-            cout << "2" << endl;
-            cout << five << endl;
-            return 0;
-        }
-    }
-    if(tmp == -2) {
-        cout << "1" << endl;
-        cout << "1 " << two << endl;
-        cout << "1 " << three << endl;
-        cin >> tmp;
-        if(tmp == 1) {
-            cout << "2" << endl;
-            cout << two << endl;
-            return 0;
-        }
-        if(tmp == -1) {
-            cout << "2" << endl;
-            cout << three << endl;
-            return 0;
-        }
+	precompute();
+    int t;
+    cin >> t ;
+    while(t--) {
+    	ll x,k;
+    	cin >> x >> k;
+    	cout << recurse(x,fib.size()-1,k) << endl;
     }
     return 0;
 }
