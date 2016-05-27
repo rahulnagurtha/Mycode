@@ -43,6 +43,16 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    
+    ll a,b,c,d,n,num = 0;
+    cin >> n;
+    cin >> a >> b >> c >> d;
+    ll x1,x2,x3,x4;
+    for (ll x1 = 1; x1 <= n; ++x1) {
+    	x2 = x1 + b - c;
+    	x3 = x1 + a - d;
+    	x4 = x1 + a + b - c - d;
+    	if (x2 >= 1 && x2 <= n && x3 >= 1 && x3 <= n && x4 >= 1 && x4 <= n ) num++;
+    }
+    cout << num*n << endl;
     return 0;
 }
