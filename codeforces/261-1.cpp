@@ -2,12 +2,6 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -19,6 +13,9 @@ struct debugger dbg;
 #define pi(i)                   printf("%d\n",i)
 #define plli(i)                 printf("%I64d\n",i)
 
+#define FOR(i,a,b)              for(int i=a;i<b;i++)
+#define REP(i,n)                FOR(i,0,n)
+#define foreach(v, c)           for( typeof( (c).begin()) v = (c).begin();  v != (c).end(); ++v)
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
 #define FF                      first
@@ -26,15 +23,15 @@ struct debugger dbg;
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
 #define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
-#define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
-#define MOD                     1000000007LL
+#define rem(a,b)                (((a)<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
+#define INF                     1000000007LL
 
 typedef long long int ll;
 typedef pair<int,int> PII;
 typedef pair<ll,ll> PLL;
-typedef vector<string> VS;
 typedef vector<int> VI;
 typedef vector<ll> VL;
+typedef vector<string> VS;
 typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
@@ -43,16 +40,22 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    ll a,b,c,d,n,num = 0;
-    cin >> n;
-    cin >> a >> b >> c >> d;
-    ll x1,x2,x3,x4;
-    for (ll x1 = 1; x1 <= n; ++x1) {
-    	x2 = x1 + b - c;
-    	x3 = x1 + a - d;
-    	x4 = x1 + a + b - c - d;
-    	if (x2 >= 1 && x2 <= n && x3 >= 1 && x3 <= n && x4 >= 1 && x4 <= n ) num++;
+    int x1,y1,x2,y2;
+    int dist;
+    cin >> x1 >> y1 >> x2 >> y2 ;
+    if (x1 == x2) {
+        dist = abs(x1-x2) + abs(y1-y2);
+        cout << x1 + dist << " " << y1 << " " << x2 + dist << " " << y2 << endl;
     }
-    cout << num*n << endl;
+    else if(y1 == y2) {
+        dist = abs(x1-x2) + abs(y1-y2);
+        cout << x1 << " " << y1 + dist << " " << x2 << " " << y2 + dist << endl;
+    }
+    else if (((y2-y1) == (x2-x1)) || ((y2-y1) == (x1-x2))) {
+        cout << x1 << " " << y2 << " " << x2 << " " << y1 << endl;
+    }
+    else {
+        printf("-1\n");
+    }
     return 0;
 }

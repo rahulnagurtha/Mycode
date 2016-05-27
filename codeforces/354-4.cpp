@@ -40,19 +40,45 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int n,m;
+bool visited[4][1005][1005];
+deque<pair<PII,int> > Q;
+int mask[1005][1005];
+int xT,yT,xM,yM;
+int curD,curX,curY;
+
+bool isIn(int xX,int yY) {
+    return (xX >= 1 && xX <=n && yY >= 1 && yY <= m);
+}
+
 
 int main()
 {
-    ll a,b,c,d,n,num = 0;
-    cin >> n;
-    cin >> a >> b >> c >> d;
-    ll x1,x2,x3,x4;
-    for (ll x1 = 1; x1 <= n; ++x1) {
-    	x2 = x1 + b - c;
-    	x3 = x1 + a - d;
-    	x4 = x1 + a + b - c - d;
-    	if (x2 >= 1 && x2 <= n && x3 >= 1 && x3 <= n && x4 >= 1 && x4 <= n ) num++;
-    }
-    cout << num*n << endl;
+    SYNC;
+    pair<PII,int> curPt;
+    string tmp;
+    cin >> n >> m;
+    for (int i = 1; i <= n; ++i) {
+        cin >> tmp;
+        for (int j = 1; j <= m; ++j) {
+            if(tmp[j] == '+') mask[i][j] = 15;
+            else if(tmp[j] == '-') mask[i][j] = 5;
+            else if(tmp[j] == '|') mask[i][j] = 10;
+            else if(tmp[j] == '^') mask[i][j] = 8;
+            else if(tmp[j] == '>') mask[i][j] = 4;
+            else if(tmp[j] == '<') mask[i][j] = 1;
+            else if(tmp[j] == 'v') mask[i][j] = 2;
+            else if(tmp[j] == 'L') mask[i][j] = 14;
+            else if(tmp[j] == 'R') mask[i][j] = 13;
+            else if(tmp[j] == 'U') mask[i][j] = 7;
+            else if(tmp[j] == 'D') mask[i][j] = 11;
+            else if(tmp[j] == '*') mask[i][j] = 0;
+        }
+        cin >> xT >> yT >> xM >> yM;
+        visited[xT][yT] = true;
+        Q.pb(mp(mp(xT,yT),0));
+        while(!Q.empty()) {
+
+        }
     return 0;
 }
