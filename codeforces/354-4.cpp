@@ -70,18 +70,18 @@ int main()
     for (int i = 1; i <= n; ++i) {
         cin >> tmp;
         for (int j = 1; j <= m; ++j) {
-            if(tmp[j] == '+') mask[i][j] = 15;
-            else if(tmp[j] == '-') mask[i][j] = 5;
-            else if(tmp[j] == '|') mask[i][j] = 10;
-            else if(tmp[j] == '^') mask[i][j] = 8;
-            else if(tmp[j] == '>') mask[i][j] = 4;
-            else if(tmp[j] == '<') mask[i][j] = 1;
-            else if(tmp[j] == 'v') mask[i][j] = 2;
-            else if(tmp[j] == 'L') mask[i][j] = 14;
-            else if(tmp[j] == 'R') mask[i][j] = 11;
-            else if(tmp[j] == 'U') mask[i][j] = 7;
-            else if(tmp[j] == 'D') mask[i][j] = 13;
-            else if(tmp[j] == '*') mask[i][j] = 0;
+            if(tmp[j-1] == '+') mask[i][j] = 15;
+            else if(tmp[j-1] == '-') mask[i][j] = 5;
+            else if(tmp[j-1] == '|') mask[i][j] = 10;
+            else if(tmp[j-1] == '^') mask[i][j] = 8;
+            else if(tmp[j-1] == '>') mask[i][j] = 4;
+            else if(tmp[j-1] == '<') mask[i][j] = 1;
+            else if(tmp[j-1] == 'v') mask[i][j] = 2;
+            else if(tmp[j-1] == 'L') mask[i][j] = 14;
+            else if(tmp[j-1] == 'R') mask[i][j] = 11;
+            else if(tmp[j-1] == 'U') mask[i][j] = 7;
+            else if(tmp[j-1] == 'D') mask[i][j] = 13;
+            else if(tmp[j-1] == '*') mask[i][j] = 0;
         }
     }
     cin >> xT >> yT >> xM >> yM;
