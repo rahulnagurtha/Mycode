@@ -41,21 +41,30 @@ typedef vector<VI> VOVI;
 
 
 int n,m;
-bool visited[4][1005][1005];
-deque<pair<PII,int> > Q;
-int mask[1005][1005];
 int xT,yT,xM,yM;
-int curD,curX,curY;
+int mask[1005][1005];
+int Dis[4][1005][1005];
+bool visited[4][1005][1005];
+int curDis,curX,curY,curDir;
 
-bool isIn(int xX,int yY) {
+int dX[] = {-1,0,1,0};
+int dY[] = {0,1,0,-1};
+
+deque<pair<PII,int> > Q;
+
+inline bool isIn(int xX,int yY) {
     return (xX >= 1 && xX <=n && yY >= 1 && yY <= m);
+}
+
+inline bool isOpen(int msk,int num) {
+    return ( (msk >> (4 - num)) & 1); 
 }
 
 
 int main()
 {
     SYNC;
-    pair<PII,int> curPt;
+    int me,nextguy;
     string tmp;
     cin >> n >> m;
     for (int i = 1; i <= n; ++i) {
@@ -69,16 +78,55 @@ int main()
             else if(tmp[j] == '<') mask[i][j] = 1;
             else if(tmp[j] == 'v') mask[i][j] = 2;
             else if(tmp[j] == 'L') mask[i][j] = 14;
-            else if(tmp[j] == 'R') mask[i][j] = 13;
+            else if(tmp[j] == 'R') mask[i][j] = 11;
             else if(tmp[j] == 'U') mask[i][j] = 7;
-            else if(tmp[j] == 'D') mask[i][j] = 11;
+            else if(tmp[j] == 'D') mask[i][j] = 13;
             else if(tmp[j] == '*') mask[i][j] = 0;
         }
-        cin >> xT >> yT >> xM >> yM;
-        visited[xT][yT] = true;
-        Q.pb(mp(mp(xT,yT),0));
-        while(!Q.empty()) {
+    }
+    cin >> xT >> yT >> xM >> yM;
+    visited[0][xT][yT] = true;
+    Q.pb(mp(mp(xT,yT),0));
+    Dis[0][xT][yT] = 0;
 
+    while(!Q.empty()) {
+        curX = Q.front().FF.FF;
+        curY = Q.front().FF.SS;
+        curDir = Q.front().SS;
+        curDis = Dis[curDir][curX][curY];
+        Q.pop_front();
+        me = ((mask[curX][curY] >> curDir) | (mask[curX][curY] << (4-curDir)));
+        if (curX == xM && curY == yM) {
+            cout << curDis << endl;
+            return 0;
         }
+        if (!visited[(curDir+1)&3][curX][curY]) {
+            visited[(curDir+1)&3][curX][curY] = true;
+            Dis[(curDir+1)&3][curX][curY] = curDis + 1;
+            Q.pb(mp(mp(curX,curY),(curDir+1)&3));
+        }
+        for (int i = 0; i < 4; ++i) {
+            if(!isIn(curX+dX[i],curY+dY[i])) continue;
+            if(visited[curDir][curX+dX[i]][curY+dY[i]]) continue;
+
+            nextguy = ((mask[curX+dX[i]][curY+dY[i]] >> curDir) | (mask[curX+dX[i]][curY+dY[i]] << (4-curDir)));
+            if(i == 0) {
+                if( !(isOpen(me,1)) || !(isOpen(nextguy,3))) continue;
+            }
+            if(i == 1) {
+                if( !(isOpen(me,2)) || !(isOpen(nextguy,4))) continue;
+            }
+            if(i == 2) {
+                if( !(isOpen(me,3)) || !(isOpen(nextguy,1))) continue;
+            }
+            if(i == 3) {
+                if( !(isOpen(me,4)) || !(isOpen(nextguy,2))) continue;
+            }
+            visited[curDir][curX+dX[i]][curY+dY[i]] = true;
+            Q.pb(mp(mp(curX+dX[i],curY+dY[i]),curDir));
+            Dis[curDir][curX+dX[i]][curY+dY[i]] = curDis + 1;
+        }
+    }
+    cout << "-1" << endl;
     return 0;
 }

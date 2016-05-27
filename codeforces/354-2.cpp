@@ -39,11 +39,17 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-vector<vector<float> > tmp;
+vector<double> tmp;
 
 int main()
 {
-    int n,t;
-    
+    ll n,t;
+    cin >> n >> t;
+    tmp.pb(0);
+    tmp.pb();
+    tmp.pb(0);
+    for (int i = 1; i <= n; ++i) {
+    	
+    }
     return 0;
 }
