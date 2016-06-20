@@ -1,12 +1,7 @@
-/*
-http://codeforces.com/blog/entry/3327
- */
- 
- 
 #include <bits/stdc++.h>
  
 using namespace std;
- 
+
 static struct IO {
     char tmp[1 << 10];
  
@@ -93,96 +88,123 @@ defineOutFor(long long)
 #define cout __io__
 #define cin __io__
 } __io__;
- 
- 
- 
- 
-#define Max 1005
-#define INF (1 << 30)
+
+
+#define si(i)                   scanf("%d",&i)
+#define si2(i,j)                scanf("%d %d",&i,&j)
+#define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
+#define slli(i)                 scanf("%lld",&i)
+#define slli2(i,j)              scanf("%lld %lld",&i,&j)
+#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
+
+#define pi(i)                   printf("%d\n",i)
+#define plli(i)                 printf("%lld\n",i)
+
+#define SYNC                    ios_base::sync_with_stdio(0)
+#define mp                      make_pair
+#define FF                      first
+#define SS                      second
+#define pb                      push_back
+#define fill(a,v)               memset(a,v,sizeof a)
+#define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
+#define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
+#define MOD                     1000000007LL
+
 typedef long long int ll;
+typedef pair<int,int> PII;
+typedef pair<ll,ll> PLL;
+typedef vector<string> VS;
+typedef vector<int> VI;
+typedef vector<ll> VL;
+typedef vector<PII> VOII;
+typedef vector<PLL> VOLL;
+typedef vector<VI> VOVI;
  
-ll P[Max][Max];
+#define LMT 1005
+#define INF (1 << 30)
  
+ 
+ll a[LMT][LMT];
+ll m , n ;
+ 
+ 
+ll q,A,B;
+ll pow2[15];
+ll rnda,rndb;
+ll Sum[LMT][LMT];
+ll X1, Y1, X2, Y2;
+ll offseta,offsetb;
+ll dp[LMT][LMT][11][11];
 
-int T[2 * Max * Max];
 
-struct Segtree2d {
- 
-    int build(int node, int a1, int b1, int a2, int b2) {
-        if (a1 > a2 or b1 > b2)
-            return -INF;
- 
-        if (a1 == a2 and b1 == b2)
-            return T[node] = P[a1][b1];
- 
-        T[node] = -INF;
-        T[node] = max(T[node], build(4 * node - 2, a1, b1, (a1 + a2) / 2, (b1 + b2) / 2 ) );
-        T[node] = max(T[node], build(4 * node - 1, (a1 + a2) / 2 + 1, b1, a2, (b1 + b2) / 2 ));
-        T[node] = max(T[node], build(4 * node + 0, a1, (b1 + b2) / 2 + 1, (a1 + a2) / 2, b2) );
-        T[node] = max(T[node], build(4 * node + 1, (a1 + a2) / 2 + 1, (b1 + b2) / 2 + 1, a2, b2) );
-        return T[node];
-    }
-
-    int query(int node, int a1, int b1, int a2, int b2, int X1, int Y1, int X2, int Y2) {
-        if (X1 > a2 or Y1 > b2 or X2 < a1 or Y2 < b1 or a1 > a2 or b1 > b2)
-            return -INF;
- 
-        if (X1 <= a1 and Y1 <= b1 and a2 <= X2 and b2 <= Y2)
-            return T[node];
- 
-        int mx = -INF;
-        mx = max(mx, query(4 * node - 2, a1, b1, (a1 + a2) / 2, (b1 + b2) / 2, X1, Y1, X2, Y2) );
-        mx = max(mx, query(4 * node - 1, (a1 + a2) / 2 + 1, b1, a2, (b1 + b2) / 2, X1, Y1, X2, Y2) );
-        mx = max(mx, query(4 * node + 0, a1, (b1 + b2) / 2 + 1, (a1 + a2) / 2, b2, X1, Y1, X2, Y2) );
-        mx = max(mx, query(4 * node + 1, (a1 + a2) / 2 + 1, (b1 + b2) / 2 + 1, a2, b2, X1, Y1, X2, Y2));
-        return mx;
-    }
-};
- 
-int n,m,t,a,b;
-Segtree2d Tmax;
-ll Sum[1005][1005];
-int X1, Y1, X2, Y2;
- 
 void init() {
     ll tmp;
-    Tmax.build(1,1,1,n, m);
     for (ll i = 1; i <= n; ++i) {
         tmp = 0;
         for (ll j = 1; j <= m; ++j) {
-            tmp += P[i][j];
+            tmp += a[i][j];
             Sum[i][j] = Sum[i-1][j] + tmp;
+        }
+    }
+    for (int i = 0; i < 13; ++i) {
+        pow2[i] = 1 << i;
+    }
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= m; ++j) {
+            dp[i][j][0][0] = a[i][j];
+        }
+    }
+    for (int i = 1; i < 11; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            for (int k = 1; k+pow2[i-1] <= m; ++k) {
+                dp[j][k][0][i] = max(dp[j][k][0][i-1],dp[j][k+pow2[i-1]][0][i-1]);
+            }
+        }
+    }
+    for (int i = 1; i < 11; ++i) {
+        for (int j = 1; j+pow2[i-1] <= n; ++j) {
+            for (int k = 1; k <= m; ++k) {
+                dp[j][k][i][0] = max(dp[j][k][i-1][0],dp[j+pow2[i-1]][k][i-1][0]);
+            }
+        }
+    }
+
+    for (int p = 1; p < 11; ++p) {
+        for (int q = 1; q < 11; ++q) {
+            for (int i = 1; i <= n; ++i) {
+                for (int j = 1; j+pow2[q-1] <= m; ++j) {
+                    dp[i][j][p][q] = max(dp[i][j][p][q-1],dp[i][j+pow2[q-1]][p][q-1]);
+                }
+            }
         }
     }
     return;
 }
- 
-inline ll getSum() {
-    return Sum[X2][Y2] - Sum[X1-1][Y2] - Sum[X2][Y1-1] + Sum[X1-1][Y1-1];
-}
+
  
 int main(void) {
     ll ans;
     ll tmp;
+    ll tmp1;
     cin >> n >> m;
     for(ll i = 1; i <= n; i++) {
         for(ll j = 1; j <= m; j++) {
-            cin >> P[i][j];
+            cin >> a[i][j];
         }
     }
     init();
-    cin >> t;
-    for (ll i = 0; i < t; ++i)
+    cin >> q;
+    for (ll i = 0; i < q; ++i)
     {
         ans = 1000000007LL;
-        cin >> a >> b;
-        for (X1 = 1; X1 + a - 1 <= n; ++X1) {
-            X2 = X1 + a - 1;
-            for (Y1 = 1; Y1 + b - 1 <= m; ++Y1) {
-                Y2 = Y1 + b - 1;
-                tmp = 0;
-                // cout << X1 << "," << Y1 << " <-> " << X2 << "," << Y2 << "  : " << (Tmax.query(X1,Y1,X2,Y2).mx)*(a*b) << " - " << getSum() << endl;
-                tmp = ((ll)Tmax.query(1, 1, 1, n, m,X1,Y1,X2,Y2))*(a*b) - getSum();
+        cin >> A >> B;
+        rnda = log2(A);
+        rndb = log2(B);
+        offseta = A - pow2[rnda];
+        offsetb = B - pow2[rndb];
+        for (X1 = 1; X1 + A - 1 <= n; ++X1) {
+            for (Y1 = 1; Y1 + B - 1 <= m; ++Y1) {
+                tmp = (max(max(dp[X1][Y1][rnda][rndb],dp[X1+offseta][Y1+offsetb][rnda][rndb]),max(dp[X1][Y1+offsetb][rnda][rndb],dp[X1+offseta][Y1][rnda][rndb])))*(A*B) - (Sum[X1 + A - 1][Y1 + B - 1] - Sum[X1-1][Y1 + B - 1] - Sum[X1 + A - 1][Y1-1] + Sum[X1-1][Y1-1]);
                 ans = min(ans,tmp);
             }
         }
