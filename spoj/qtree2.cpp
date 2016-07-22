@@ -28,8 +28,8 @@ struct debugger dbg;
 #define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
-#define MAX_NODES               1005
-#define LOGN                    12
+#define MAX_NODES               10005
+#define LOGN                    15
 
 
 
@@ -43,25 +43,32 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-VOVI graph;
-bool isRoot[MAX_NODES];
-int dp[MAX_NODES][LOGN+1],depth[MAX_NODES];
+vector<VOII> graph;
+bool visited[MAX_NODES];
+int dp[MAX_NODES][LOGN+1];
+int edgeSum[MAX_NODES],depth[MAX_NODES];
+
 
 
 void init() {
 	graph.clear();
 	graph.resize(MAX_NODES);
 	fill(depth,0);
-	fill(isRoot,true);
+    fill(edgeSum,0);
+	fill(visited,false);
 	fill(dp,-1);
 }
 
-void dfs(int cur,int par,int parDepth) {
-	dp[cur][0] = par;
-	depth[cur] = parDepth + 1;
+void dfs(int cur,int par,int parDepth,int sumFromRoot) {
+	visited[cur] = true;
+    dp[cur][0] = par;
+	edgeSum[cur] = sumFromRoot;
+    depth[cur] = parDepth + 1;
 	for (int i = 0; i < graph[cur].size(); ++i) {
-		dfs(graph[cur][i],cur,parDepth + 1);
-	}
+		if(!visited[graph[cur][i].FF]) {
+            dfs(graph[cur][i].FF,cur,parDepth + 1,sumFromRoot + graph[cur][i].SS);
+	    }
+    }
 	return;
 }
 
@@ -86,41 +93,58 @@ int lca(int u,int v) {
 	return dp[u][0];
 }
 
+int findkthAncestor(int node,int k) {
+    int tmp = 1,cnt = 0;
+    while(tmp <= k) {
+        if(tmp & k) node = dp[node][cnt]; 
+        cnt++;
+        tmp = tmp << 1;
+    }
+    return node;
+}
+
+
 int main()
 {
 	SYNC;
     int t,cnt = 1;
     cin >> t ;
     while(t--) {
-    	int n,tmp,u,v;
+    	int n,u,v,w,node,tmp;
     	int numChildren,numQueries;
+        int edgesU2Node,edgesV2Node;
+        string queryType;
     	init();
     	cin >> n;
-    	for (int i = 0; i < n; ++i) {
-    		cin >> numChildren;
-    		for (int j = 0; j < numChildren; ++j) {
-    			cin >> tmp;
-    			graph[i+1].pb(tmp);
-    			isRoot[tmp] = false;
-    		}
+    	for (int i = 1; i < n; ++i) {
+    		cin >> u >> v >> w;
+            graph[u].pb(mp(v,w));
+            graph[v].pb(mp(u,w));
     	}
-    	for (int i = 1; i <= n; ++i) {
-    		if(isRoot[i]) {
-    			dfs(i,-1,-1);
-    			break;
-    		}
-    	}
+		dfs(1,-1,-1,0);
     	for (int j = 1; j <= LOGN; ++j) {
     		for (int i = 1; i <= n; ++i) {
     			if(dp[i][j-1] != -1) dp[i][j] = dp[dp[i][j-1]][j-1];
     		}
     	}
-    	cout << "Case " << cnt << ":" << endl;
-    	cin >> numQueries;
-    	for (int i = 0; i < numQueries; ++i) {
-    		cin >> u >> v;
-    		cout << lca(u,v) << endl;
-    	}
+    	while(1) {
+            cin >> queryType;
+            if (queryType == "DONE") break;
+            else if(queryType == "DIST") {
+                cin >> u >> v;
+                cout << edgeSum[u] + edgeSum[v] - 2*edgeSum[lca(u,v)] << endl;
+            }
+            else {
+                cin >> u >> v >> w;
+                node = lca(u,v);
+                edgesU2Node = depth[u]- depth[node];
+                edgesV2Node = depth[v]- depth[node];
+                if(w <= edgesU2Node + 1) {
+                    cout << findkthAncestor(u,w - 1) << endl;
+                }
+                else cout << findkthAncestor(v,edgesU2Node + edgesV2Node + 1 - w) << endl;
+            }
+        }
     	cnt++;
     }
     return 0;

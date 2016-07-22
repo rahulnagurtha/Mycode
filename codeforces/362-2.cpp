@@ -44,11 +44,11 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-    char *t;
-    t = (char *)malloc(3);
-    for (int i = 0; i < 10; ++i) {
-    	t[i] = ' ';
+    int t;
+    freopen("in.txt", "r", stdin);
+    cin >> t ;
+    while(t--) {
+
     }
-    printf("\n");
     return 0;
 }

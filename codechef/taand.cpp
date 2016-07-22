@@ -9,6 +9,7 @@ struct debugger dbg;
 #define debug(args...)              // Just strip off all debug tokens
 #endif
 
+
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
@@ -40,15 +41,55 @@ typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
 
+int n;
+VS bitValues;
+int A[3*100005];
+int tmp,maxBits;
 
+string DecToBin(int number){
+    string result = "";
+    do {
+        if((number&1)==0)
+            result+="0";
+        else
+            result+="1";
+        number>>=1;
+    }while(number);
+    while(result.size() < maxBits) {
+    	result += '0';
+    }
+    reverse(result.begin(),result.end());
+    return result;
+}
+
+inline int numBitsSet(int key) {
+	int ret = 0;
+	while(key > 0) {
+		ret += key%2;
+		key /= 2;
+	}
+	return ret;
+}
 
 int main()
 {
-    char *t;
-    t = (char *)malloc(3);
-    for (int i = 0; i < 10; ++i) {
-    	t[i] = ' ';
+	ll ans = 0;
+    si(n);
+    maxBits = 0;
+    for (int i = 0; i < n; ++i) {
+    	si(A[i]);
+    	maxBits = max(maxBits,numBitsSet(A[i]));
     }
-    printf("\n");
+    for (int i = 0; i < n; ++i) {
+    	bitValues.pb(DecToBin(A[i]));
+    }
+    sort(bitValues.begin(),bitValues.end());
+    string one = bitValues[bitValues.size()-1],two = bitValues[bitValues.size()-2];
+    ll tmp = 1;
+    for (int i = one.size() - 1; i >= 0; --i) {
+    	if((one[i] == '1') && (two[i] == '1')) ans += tmp;
+    	tmp = tmp*2;
+    }
+    plli(ans);
     return 0;
 }
