@@ -12,12 +12,12 @@ struct debugger dbg;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%lld",&i)
-#define slli2(i,j)              scanf("%lld %lld",&i,&j)
-#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
+#define slli(i)                 scanf("%I64d",&i)
+#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
+#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%lld\n",i)
+#define plli(i)                 printf("%I64d\n",i)
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -39,17 +39,43 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
-
+ll n,m;
+ll a[100005];
+VL ans;
+ll k,Next;
 
 int main()
 {
-    int a,b;
-    for (int i = 0; i < 10; ++i)
+    k = 0;
+    cin >> n >> m;
+    for (int i = 0; i < n; ++i)
     {
-        cin >> a;
-        b = log2(a);
-        cout << b << endl; 
+        cin >> a[i];
     }
+    a[n] = MOD;
+    sort(a,a+n+1);
+    Next = 0;
+    for (ll i = 1; i < 10000007; ++i)
+    {
+        if (a[Next] == i)
+        {
+            Next++;
+        }
+        else {
+            if (i > m) {
+                break;
+            }
+            else {
+                m -= i;
+                ans.pb(i);
+            }
+        }
+    }
+    cout << ans.size() << endl;
+    for (int i = 0; i < ans.size(); ++i)
+    {
+        cout << ans[i] << " " ;
+    }
+    printf("\n");
     return 0;
 }

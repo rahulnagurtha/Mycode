@@ -2,22 +2,17 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
+
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%lld",&i)
-#define slli2(i,j)              scanf("%lld %lld",&i,&j)
-#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
+#define slli(i)                 scanf("%I64d",&i)
+#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
+#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%lld\n",i)
+#define plli(i)                 printf("%I64d\n",i)
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -41,15 +36,23 @@ typedef vector<VI> VOVI;
 
 
 
-
 int main()
 {
-    int a,b;
-    for (int i = 0; i < 10; ++i)
+    int n,q,t;
+    int tmp,minele = INT_MAX,maxele = INT_MIN;
+    cin >> n >> q;
+    for (int i = 0; i < n; ++i) {
+        cin >> tmp;
+        minele = min(minele,tmp);
+        maxele = max(maxele,tmp);
+    }
+    for (int i = 0; i < q; ++i)
     {
-        cin >> a;
-        b = log2(a);
-        cout << b << endl; 
+        cin >> t;
+        if (t <= maxele && t >= minele) {
+            cout << "Yes" << endl;
+        }
+        else cout << "No" << endl;
     }
     return 0;
 }
