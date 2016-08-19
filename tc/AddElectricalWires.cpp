@@ -99,22 +99,3 @@ public:
 		return accumAll();
 	}
 };
-
-int main()
-{
-	AddElectricalWires test;
-	string tmp;
-	VS wires;
-	VI gridConnections;
-	int n,m;
-	cin >> n >> m;
-	for (int i = 0; i < n; ++i) {
-		cin >> tmp;
-		wires.pb(tmp);
-	}
-	for (int i = 0; i < m; ++i) {
-		cin >> n;
-		gridConnections.pb(n);
-	}
-	cout << test.maxNewWires(wires,gridConnections) << endl;
-}

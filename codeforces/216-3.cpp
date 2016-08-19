@@ -2,73 +2,97 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
+#define si(i)                   scanf("%d",&i)
+#define si2(i,j)                scanf("%d %d",&i,&j)
+#define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
+#define slli(i)                 scanf("%I64D",&i)
+#define slli2(i,j)              scanf("%I64D %I64D",&i,&j)
+#define slli3(i,j,k)            scanf("%I64D %I64D %I64D",&i,&j,&k)
+
+#define pi(i)                   printf("%d\n",i)
+#define plli(i)                 printf("%I64D\n",i)
+
+#define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
 #define FF                      first
 #define SS                      second
 #define pb                      push_back
 #define fill(a,v)               memset(a,v,sizeof a)
-#define box(a,b) 			    ((a*b>=0)?((a/b)):((a%b==0)?(a/b):(a/b-1)))
-#define rem(a,b) 			    (a-(box(a,b))*b)
-#define ceil(a,b) 			    ((a%b==0)?(a/b):(a/b+1))
-#define rem1(a,b) 			    ((a*b<0)?(((a%b)+b)%b):(a%b))
-#define MOD                     1000000007
+#define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
+#define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
+#define MOD                     1000000007LL
+#define N 						100005
 
-typedef long long int LL;
+typedef long long int ll;
 typedef pair<int,int> PII;
-typedef pair<LL,LL> PLL;
+typedef pair<ll,ll> PLL;
+typedef vector<string> VS;
 typedef vector<int> VI;
-typedef vector<LL> VL;
+typedef vector<ll> VL;
 typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
+int dX[] = {-1,0,1,0,-1,1,1,-1};
+int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-vector<vector<PII> > graph(100005);
-int adj[100005],n,u,v,rep,temp;
-deque<int> layer;
-vector<int> answer;
+int n;
+int badRoads[N];
+VOII adj[N];
+VI res;
 
-void solve() {
-	int flag = 0;
-	for (int i = 2; i <= n; ++i) {
-		if(adj[i] == 1) {
-			layer.pb(i);
+void init() {
+	fill(badRoads,0);
+	return;
+}
+
+void dfs2(int cur,int par,int status) {
+	bool elect = true;
+	for (int i = 0; i < adj[cur].size(); ++i) {
+		if(adj[cur][i].FF != par && badRoads[adj[cur][i].FF] != 0) {
+			elect = false;
+			dfs2(adj[cur][i].FF,cur,adj[cur][i].SS);
 		}
 	}
-	while(!layer.empty()) {
-		temp = layer.front();
-		
-		//process this node
-		if(graph[temp][0].SS == 1) {
-			adj[temp]--;
-			adj[graph[temp][0].FF]--;
-			if(adj[graph[temp][0].FF] == 1 && graph[temp][0].FF != 1) layer.pb(graph[temp][0].FF);
+	if(elect) res.pb(cur);
+	return;
+}
+
+void dfs1(int cur,int par,int status) {
+	if(status == 2) badRoads[cur]++;
+	for (int i = 0; i < adj[cur].size(); ++i) {
+		if(adj[cur][i].FF != par) {
+			dfs1(adj[cur][i].FF,cur,adj[cur][i].SS);
+			badRoads[cur] += badRoads[adj[cur][i].FF];
 		}
-		else {
-			answer.pb(temp);
-		}
-		layer.pop_front();
 	}
-	printf("%d\n",answer.size());
-	for (int i = 0; i < answer.size(); ++i) {
-		printf("%d ",answer[i]);
-	}
+	return;
 }
 
 
-// main code begins now
-
 int main()
 {
-    scanf("%d",&n);
+    int x,y,t;
+    cin >> n;
     for (int i = 1; i < n; ++i) {
-    	scanf("%d %d %d",&u,&v,&rep);
-    	adj[u]++;
-    	adj[v]++;
-    	graph[u].pb(mp(v,rep));
-    	graph[v].pb(mp(u,rep));
+    	cin >> x >> y >> t;
+    	adj[x].pb(mp(y,t));
+    	adj[y].pb(mp(x,t));
     }
-    solve();
+    init();
+    dfs1(1,-1,1);
+    if(badRoads[1] != 0) dfs2(1,-1,1);
+    cout << res.size() << endl;
+    for (int i = 0; i < res.size(); ++i) {
+    	cout << res[i] << " ";
+    }
+    printf("\n");
     return 0;
 }

@@ -1,21 +1,50 @@
-int MAX(int one,int two) {
-	if(one > two) return one;
-	else return two;
-}
+vector<vector<int> > Solution::generateMatrix(int A) {
+    int n = A;
+    int nxt = 1;
+    int x1 = -1,x2 = n;
+    int y1 = -1,y2 = n;
+    vector<int> tmp(A);
+    vector<vector<int> > ans;
+    string direction = "right";
+    for(int i = 0; i < n;i++) {
+        ans.push_back(tmp);
+    }
 
-int Solution::lis(const vector<int> &A) {
-    int dp[100005] = {0};
-    for (int i = 0; i < A.size(); ++i) {
-    	dp[i] = 1;
-    	int tmp = 0;
-    	for (int j = 0; j < i; ++j) {
-    		if(A[j] < A[i]) tmp = MAX(tmp,dp[j]);	
-	    }
-	    dp[i] += tmp;
+    while(nxt <= A*A) {
+        if(direction == "right") {
+            x1++;x2--;
+            y1++;y2--;
+            if(x1 == x2) {
+                ans[x1][y1] = nxt;
+                break;
+            }
+            for(int i = y1;i < y2;i++) {
+                ans[x1][i] = nxt;
+                nxt++;
+            }
+            direction = "down"; 
+        }
+        else if(direction == "down") {
+            for(int i = x1;i < x2;i++) {
+                ans[i][y2] = nxt;
+                nxt++;
+            }
+            direction = "left";
+        }
+        else if(direction == "left") {
+            for(int i = y2;i > y1;i--) {
+                ans[x2][i] = nxt;
+                nxt++;
+            }
+            direction = "up";
+        }
+        else {
+            for(int i = x2;i > x1;i--) {
+                ans[i][y1] = nxt;
+                nxt++;
+            }
+            direction = "right";
+        }
     }
-    int tmp = 0;
-    for (int i = 0; i < A.size(); ++i) {
-    	tmp = MAX(dp[i],tmp);
-    }
-    return tmp;
+    return ans;
 }
