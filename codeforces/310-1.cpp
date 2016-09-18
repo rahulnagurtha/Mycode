@@ -45,16 +45,16 @@ typedef vector<VI> VOVI;
 
 int main()
 {
-	stack<char> info;
-    int n;
-    string a;
-    cin >> n ;
-    cin >> a;
-    for (int i = 0; i < a.size(); ++i) {
-    	if(info.empty()) info.push(a[i]);
-    	else if(info.top() != a[i]) info.pop();
-    	else info.push(a[i]);
+	int n;
+    string tmp;
+    int ones = 0;
+    int zeroes = 0;
+    cin >> n;
+    cin >> tmp;
+    for (int i = 0; i < tmp.size(); ++i) {
+        if(tmp[i] == '0') zeroes++;
+        else ones++;
     }
-    cout << info.size() << endl;
+    cout << n - 2*min(zeroes,ones) << endl;
     return 0;
 }

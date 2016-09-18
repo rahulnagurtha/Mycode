@@ -42,7 +42,7 @@ typedef vector<VI> VOVI;
 
 string s,t;
 ll n,m,kk;
-ll dp[1005][1005][11];
+ll dp[2][11][1005][1005];
 
 
 int main()
@@ -50,34 +50,37 @@ int main()
     cin >> n >> m >> kk;
     cin >> s ;
     cin >> t;
-    // fill(dp,-1);
-    if(s[1] == t[1]) dp[1][1][1] = 1;
-    else dp[1][1][1] = 0;
-
-    for (ll j = 2; j <= m; ++j) {
-    	if(s[1] == t[j]) dp[1][j][1] = 1;
-    	else dp[1][j][1] = dp[1][j-1][1];
+    for (int l = 0; l < 2; ++l) {
+        for (int k = 0; k < 11; ++k) {
+            for (int i = 0; i < 1005; ++i) {
+                for (int j = 0; j < 1005; ++j) {
+                    if(k != 0) dp[l][k][i][j] = INT_MIN;
+                    else dp[l][k][i][j] = 0;
+                }
+            }
+        }
     }
-
-    for (ll j = 2; j <= n; ++j) {
-    	if(s[j] == t[1]) dp[j][1][1] = 1;
-    	else dp[j][1][1] = dp[j-1][1][1];
+    for (int i = s.size() - 1; i >= 0; --i) {
+        for (int j = t.size() - 1; j >= 0; --j) {
+            for (int k = 1; k <= kk; ++k) {
+                //zero
+                if(s[i] == t[j]) {
+                    dp[0][k][i][j] = max(1+dp[1][k][i+1][j+1],1+dp[0][k-1][i+1][j+1]);
+                    dp[0][k][i][j] = max(dp[0][k][i][j],max(dp[0][k][i+1][j],dp[0][k][i][j+1]));
+                }
+                else {
+                    dp[0][k][i][j] = max(dp[0][k][i+1][j],dp[0][k][i][j+1]);
+                }
+                //one
+                if(s[i] == t[j]) {
+                    dp[1][k][i][j] = max(1+dp[1][k][i+1][j+1],1+dp[0][k-1][i+1][j+1]);
+                }
+                else {
+                    dp[1][k][i][j] = INT_MIN;
+                }
+            }
+        }
     }
-
-    for (ll i = 2; i <= n; ++i) {
-    	for (ll j = 2; j <= m; ++j) {
-    		for (ll k = 1; k <= kk; ++k) {
-    			if (s[i] != t[j]) {
-    				dp[i][j][k] = max(dp[i][j-1][k],dp[i-1][j][k]);
-    			}
-    			else {
-    				dp[i][j][k] = max(1+dp[i-1][j-1][k-1],1+dp[i-1][j-1][k]);	
-    			}
-    		}
-    	}
-    }
-    cout << dp[n][m][kk] << endl;
-
-
+    cout << max(dp[0][kk][0][0],dp[1][kk][0][0]) << endl;
     return 0;
 }

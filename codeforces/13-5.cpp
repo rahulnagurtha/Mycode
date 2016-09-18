@@ -57,7 +57,6 @@ inline void updateBlock(int bNum) {
 	int lft,ryt;
 	lft = (bNum-1)*bsz + 1;
 	ryt = min(n,bNum*bsz);
-	printf("Block %d:\n",bNum);
 	for (int i = ryt; i >= lft; --i) {	
 		if(power[i] + i > ryt) {
 			nxt[i] = power[i] + i;
@@ -67,7 +66,6 @@ inline void updateBlock(int bNum) {
 			nxt[i] = nxt[power[i] + i];
 			jumpsNxtBlock[i] = 1 + jumpsNxtBlock[power[i] + i];
 		}
-		cout << i << " <> " << nxt[i] << " " << jumpsNxtBlock[i] << endl;
 	}
 	return;
 
@@ -77,12 +75,10 @@ inline void queryCell(int cell) {
 	int totalJumps = 0;
 	int lastCell;
 	while(cell <= n) {
-		printf("%d -> ",cell);
-		totalJumps += jumpsNxtBlock[cell];
 		lastCell = cell;
+		totalJumps += jumpsNxtBlock[cell];
 		cell = nxt[cell];
 	}
-	printf("\n");
 	printf("%d %d\n",lastCell,totalJumps);
 	return;
 }

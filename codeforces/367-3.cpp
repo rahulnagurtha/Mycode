@@ -5,12 +5,12 @@ using namespace std;
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%lld",&i)
-#define slli2(i,j)              scanf("%lld %lld",&i,&j)
-#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
+#define slli(i)                 scanf("%I64d",&i)
+#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
+#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%lld\n",i)
+#define plli(i)                 printf("%I64d\n",i)
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair

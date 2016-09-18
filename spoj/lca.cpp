@@ -60,7 +60,7 @@ void dfs(int cur,int par,int parDepth) {
 	dp[cur][0] = par;
 	depth[cur] = parDepth + 1;
 	for (int i = 0; i < graph[cur].size(); ++i) {
-		dfs(graph[cur][i],cur,parDepth + 1);
+		dfs(graph[cur][i],cur,depth[cur]);
 	}
 	return;
 }
