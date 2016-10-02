@@ -2,16 +2,22 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
-#define slli(i)                 scanf("%lld",&i)
-#define slli2(i,j)              scanf("%lld %lld",&i,&j)
-#define slli3(i,j,k)            scanf("%lld %lld %lld",&i,&j,&k)
+#define slli(i)                 scanf("%I64d",&i)
+#define slli2(i,j)              scanf("%I64d %I64d",&i,&j)
+#define slli3(i,j,k)            scanf("%I64d %I64d %I64d",&i,&j,&k)
 
 #define pi(i)                   printf("%d\n",i)
-#define plli(i)                 printf("%lld\n",i)
+#define plli(i)                 printf("%I64d\n",i)
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -22,8 +28,8 @@ using namespace std;
 #define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
-#define INF                     INT_MAX
-#define N                       100007
+#define INF 					INT_MAX
+#define N                     	100007
 
 
 typedef long long int ll;
@@ -40,27 +46,35 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
-int 
-
-
 inline void Refresh() {
     
 }
 
+int elements[105];
 
 int main()
 {
-    int t;
-    int testcase = 1;
-    freopen("in.txt", "r", stdin);
-    cin >> t ;
-    while(t--) {
-        cout << "Case #" << testcase << ": ";
-        
-
-
-        // cout << answer << endl;
-        testcase++;
+    int n;
+    int tmp;
+    VI A;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+    	cin >> tmp;
+    	A.pb(tmp);
     }
+    sort(A.begin(),A.end());
+    for (int i = 0; i < n; ++i) {
+    	for (int j = 0; j < n; ++j) {
+    		if(elements[j] <= A[i]) {
+    			elements[j]++;
+    			break;
+    		}
+    	}
+    }
+    int ans = 0;
+    for (int i = 0; i < n; ++i) {
+    	if(elements[i] > 0) ans++;
+    }
+    cout << ans << endl;
     return 0;
 }

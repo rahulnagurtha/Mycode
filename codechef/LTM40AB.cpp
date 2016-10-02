@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -40,8 +46,6 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
-int 
-
 
 inline void Refresh() {
     
@@ -51,16 +55,16 @@ inline void Refresh() {
 int main()
 {
     int t;
-    int testcase = 1;
-    freopen("in.txt", "r", stdin);
+    // freopen("in.txt", "r", stdin);
     cin >> t ;
     while(t--) {
-        cout << "Case #" << testcase << ": ";
-        
-
-
-        // cout << answer << endl;
-        testcase++;
+    	ll ans = 0;
+        int a,b,c,d;
+        cin >> a >> b >> c >> d;
+        for (int i = a; i <= b; ++i) {
+        	if(d > i) ans += max(0,d - (max(i+1,c)) + 1);
+        }
+        cout << ans << endl;
     }
     return 0;
 }

@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -40,27 +46,54 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
-int 
-
 
 inline void Refresh() {
     
 }
 
+int dp[1005][1005];
+string A,B;
+
+int recurse(int l,int r) {
+	if(dp[l][r] != -1) return dp[l][r];
+	if(l == 0) {
+		dp[l][r] = 0;
+		for (int i = 1; i <= r; ++i) {
+			dp[l][r] += (int)(B[i] - '0');
+		}
+		return dp[l][r];
+	}
+	if(r == 0) {
+		dp[l][r] = 0;
+		for (int i = 1; i <= l; ++i) {
+			dp[l][r] += (int)(A[i] - '0');
+		}
+		return dp[l][r];
+	}
+	if(A[l] == B[r]) {
+		dp[l][r] = recurse(l-1,r-1);
+	}
+	else {
+		dp[l][r] = min((int)(A[l] - '0') + recurse(l-1,r),(int)(B[r] - '0') + recurse(l,r-1)); 
+	}
+	return dp[l][r];
+}
 
 int main()
 {
     int t;
-    int testcase = 1;
-    freopen("in.txt", "r", stdin);
+    // freopen("in.txt", "r", stdin);
     cin >> t ;
     while(t--) {
-        cout << "Case #" << testcase << ": ";
-        
-
-
-        // cout << answer << endl;
-        testcase++;
+    	A = " ";
+    	B = " ";
+    	string tmp;
+        cin >> tmp;
+        A += tmp;
+        cin >> tmp;
+        B += tmp;
+    	fill(dp,-1);
+    	cout << recurse(A.size(),B.size()) << endl;
     }
     return 0;
 }

@@ -2,6 +2,13 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
+
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -40,11 +47,53 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
+double answer;
+double P,Q;
 
-inline void Refresh() {
-    
+string Grid[25][25];
+int visited[25][25];
+int r,c;
+
+bool isInside(int x,int y) {
+    return (0 <= x && x < r && 0 <= y && y < c);
 }
 
+inline void Refresh() {
+    answer = 0;
+    fill(visited,0);
+}
+
+
+void dfs(int remSteps,double curSum,int x,int y) {
+    // cout << remSteps << " " << curSum << " " << x << " " << y << endl;
+    if(remSteps == 0) {
+        answer = max(answer,curSum);
+        return;
+    }
+    visited[x][y]++;
+    for (int i = 0; i < 4; ++i) {
+        if(isInside(x + dX[i],y+dY[i])) {
+            int nx = x + dX[i];
+            int ny = y + dY[i];
+            if(Grid[nx][ny] == ".") {
+                double tmp = 1;
+                for (int j = 0; j < visited[nx][ny]; ++j) {
+                    tmp = tmp*(1 - Q);
+                }
+                dfs(remSteps - 1,curSum + tmp*Q, nx, ny);
+            }
+            else {
+                double tmp = 1;
+                for (int j = 0; j < visited[nx][ny]; ++j) {
+                    tmp = tmp*(1 - P);
+                }
+                dfs(remSteps - 1,curSum + tmp*P, nx, ny);
+            }
+        }
+    }
+    visited[x][y]--;
+    return;
+}
 
 int main()
 {
@@ -53,11 +102,20 @@ int main()
     freopen("in.txt", "r", stdin);
     cin >> t ;
     while(t--) {
+        Refresh();
+        int rs,cs;
+        int s;
         cout << "Case #" << testcase << ": ";
-        
-
-
-        cout << testcase << endl;
+        cin >> r >> c >> rs >> cs >> s;
+        cin >> P >> Q;
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < c; ++j) {
+                cin >> Grid[i][j];
+            }
+        }
+        dfs(s,0,rs,cs);
+        cout.precision(10);
+        cout << fixed << answer << endl;
         testcase++;
     }
     return 0;

@@ -9,7 +9,6 @@ struct debugger dbg;
 #define debug(args...)              // Just strip off all debug tokens
 #endif
 
-
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
@@ -47,71 +46,82 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
-double answer;
-double P,Q;
+int V,E,in,out,weight,one,two;
+ll ans;
+vector<pair<int,PII> > edges;
+PII parent[N];
 
-string Grid[25][25];
-int visited[25][25];
-int r,c;
 
-bool isInside(int x,int y) {
-	return (0 <= x && x < r && 0 <= y && y < c);
+struct sort_pred {
+    bool operator()(const std::pair<int,pair<int,int> > &left, const std::pair<int,pair<int,int> > &right) {
+        return left.first < right.first;
+    }
+};
+
+
+void makeset(int total) {
+    for (int i = 1; i <= total; ++i) {
+        parent[i].FF = i;
+        parent[i].SS = 0;
+    }
 }
+
+int findset(int number) {
+    if(number == parent[number].FF) {
+        return parent[number].FF;
+    }
+    else {
+        parent[number].FF = findset(parent[number].FF);
+        return parent[number].FF;
+    }
+}
+
+void combine(int one,int two) {
+    if(parent[one].SS > parent[two].SS) {
+        parent[two].FF = parent[one].FF;
+    }
+    else if(parent[one].SS < parent[two].SS) {
+        parent[one].FF = parent[two].FF;
+    }
+    else {
+        parent[two].FF = parent[one].FF;
+        parent[one].SS++;
+    }
+    return;
+}
+
+
 
 inline void Refresh() {
-    answer = 0;
-    fill(visited,0);
+    
 }
 
-
-void dfs(int remSteps,int x,int y) {
-	// cout << remSteps << " " << curSum << " " << x << " " << y << endl;
-	if(remSteps == 0) {
-		double tmp = 0;
-		double prob = 0;
-
-		for (int i = 0; i < r; ++i) {
-			for (int j = 0; j < c; ++j) {
-				if(Grid[i][j] == ".") prob = Q;
-				else prob = P;
-				tmp += (1.0 - pow(1.0 - prob,visited[i][j]));
-			}
-		}
-		answer = max(answer,tmp);
-		return;
-	}
-	for (int i = 0; i < 4; ++i) {
-		if(isInside(x+dX[i],y+dY[i])) {
-			visited[x+dX[i]][y+dY[i]]++;
-			dfs(remSteps - 1,x + dX[i],y + dY[i]);
-			visited[x+dX[i]][y+dY[i]]--;
-		}
-	}
-	return;
-}
+// main code begins now
 
 int main()
 {
-    int t;
-    int testcase = 1;
-    freopen("in.txt", "r", stdin);
-    cin >> t ;
-    while(t--) {
-    	Refresh();
-    	int rs,cs;
-        int s;
-        cout << "Case #" << testcase << ": ";
-        cin >> r >> c >> rs >> cs >> s;
-        cin >> P >> Q;
-        for (int i = 0; i < r; ++i) {
-        	for (int j = 0; j < c; ++j) {
-        		cin >> Grid[i][j];
-        	}
-        }
-        dfs(s,rs,cs);
-        cout.precision(10);
-        cout << fixed << answer << endl;
-        testcase++;
+	int tmp;
+    scanf("%d %d",&V,&E);
+    for (int i = 0; i < E; ++i) {
+    	scanf("%d %d %d",&out,&in,&tmp);
+    	if(tmp == 0) {
+    		weight = 0;	
+    	}
+    	else {
+    		scanf("%d",&weight);
+    	}
+    	edges.pb(mp(weight,mp(out,in)));
     }
+    sort(edges.begin(),edges.end(),sort_pred());
+    makeset(V+2);
+    for (int i = 0; i < E; ++i) {
+        one = findset(edges[i].SS.FF);
+        two = findset(edges[i].SS.SS);
+        if(one != two) {
+            ans += (ll)edges[i].FF;
+            combine(one,two);
+        }
+    }
+    printf("%lld\n",ans);
     return 0;
 }

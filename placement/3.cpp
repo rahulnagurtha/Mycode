@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -40,7 +46,10 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
-int 
+ll n,m;
+ll c[1005][1005];
+ll p[1005][1005];
+ll dp[2][1005][1005]; //0 for down,1 for right
 
 
 inline void Refresh() {
@@ -50,17 +59,41 @@ inline void Refresh() {
 
 int main()
 {
-    int t;
-    int testcase = 1;
-    freopen("in.txt", "r", stdin);
-    cin >> t ;
+    ll t;
+    // freopen("in.txt", "r", stdin);
+    slli(t);
     while(t--) {
-        cout << "Case #" << testcase << ": ";
+        Refresh();
+        slli2(n,m);
+        for (ll i = 1; i <= n; ++i) {
+        	for (ll j = 1; j <= m; ++j) {
+        		slli(c[i][j]);
+        	}
+        }
+        for (ll i = 1; i <= n; ++i) {
+        	for (ll j = 1; j <= m; ++j) {
+        		slli(p[i][j]);
+        	}
+        }
+        dp[0][n][m] = dp[1][n][m] = c[n][m];
         
-
-
-        // cout << answer << endl;
-        testcase++;
+        //fill rightmost column
+        for (ll i = n - 1; i > 0; --i) {
+        	dp[0][i][m] = c[i][m] + dp[0][i+1][m];
+        	dp[1][i][m] = p[i][m] + dp[0][i][m];
+        }
+        //fill bottomMost row
+        for (ll i = m-1; i > 0; --i) {
+        	dp[1][n][i] = c[n][i] + dp[1][n][i+1];
+        	dp[0][n][i] = p[n][i] + dp[1][n][i];
+        }
+        for (ll j = m - 1; j > 0; --j) {
+        	for (ll i = n - 1; i > 0; --i) {
+        		dp[0][i][j] = c[i][j] + min(dp[0][i+1][j],p[i][j] + dp[1][i][j+1]);
+        		dp[1][i][j] = c[i][j] + min(dp[1][i][j+1],p[i][j] + dp[0][i+1][j]);
+        	}
+        }
+        plli(min(dp[0][1][1],dp[1][1][1]));
     }
     return 0;
 }
