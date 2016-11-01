@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -27,7 +33,6 @@ using namespace std;
 
 
 typedef long long int ll;
-typedef long double ld;
 typedef pair<int,int> PII;
 typedef pair<ll,ll> PLL;
 typedef vector<string> VS;
@@ -42,56 +47,20 @@ int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
 
+struct node{
+    ll weight[5];
+    ll val;
+};
 
 
-ld polls[4100][4100];
-
-inline void Refresh() {
-    for(int i = 0; i < 4010; i++) {
-		for(int j = 0 ; j < 4010; j++)
-			polls[i][j] = 0;
-	}
-	return;
-}
-
-
+ll n;
+node A[10*N];
+vector<node> aux[10*N];
 
 int main()
 {
-	ll n,m,t;
-	freopen("in.txt", "r", stdin);
-	cin >> t;
-	int testcase = 1;
-	while(t--) {
-		Refresh();
-		printf("Case #%d: ",testcase);
-		testcase++;
-		cin >> n >> m;
-		
-		if(m == 0) {
-			printf("1.0000000000\n");
-			continue;
-		}
-		polls[1][1] = n;
-		polls[1][1] /= (ld)(m+n);
-		for(int i = 1;i < m + n; i++) {
-			for(int j = 1;j <= n; j++) {
-				if(j > i) continue;
-				ll A = i+j;
-				ll B = i-j;
-				if(A % 2 == 1 || B%2 == 1 || B < 0) continue;
-				A /= 2;
-				B /= 2;
-				ll x1 = n-A;
-				ll x2 = m-B;
-				if(x1 > n || x1 < 0 || x2 > m || x2 < 0) continue;
-				ll sum3 = x1+x2;
-				polls[i+1][j+1] += polls[i][j]*(x1)/(ld)sum3;
-				polls[i+1][j-1] += polls[i][j]*(x2)/(ld)sum3;
-			}
-		}
-		printf("%.9Lf\n",polls[m+n][n-m]);
-	}
-
-	return 0;
+    ll a;
+    slli(n);
+    a = 1;
+    return 0;
 }

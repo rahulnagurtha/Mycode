@@ -2,13 +2,6 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
-
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
 #define si3(i,j,k)              scanf("%d %d %d",&i,&j,&k)
@@ -29,7 +22,7 @@ struct debugger dbg;
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
 #define INF                     INT_MAX
-#define N                       3007
+#define N                       100007
 
 
 typedef long long int ll;
@@ -45,38 +38,25 @@ typedef vector<VI> VOVI;
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-ll n,k;
-ll a[N];
-ll dp[N][N];
-ll dp_[N][N];
+
+ll a[500005];
+
+
 
 int main()
 {
-	cin >> n >> k;
-	for (int i = 1; i <= n; ++i) {
-		cin >> a[i];
-	}
-	dp[1][a[1]] = 1;
-    for (int i = 1; i <= N; ++i) {
-    	dp_[1][i] = dp_[1][i-1] + dp[1][i];
-    }
-    for (int i = 2; i <= n; ++i) {
-    	dp[i][a[i]]++;
-    	for (int j = 1; j < i; ++j) {
-    		if(a[i] + a[j] <= k && a[j] < a[i]) {
-    			dp[i][a[i] + a[j]] += dp[j][k-a[i]];
-    			dp[i][a[i] + a[j]] %= MOD;
-    		}
-    	}
-    	for (int j = 1; j <= N; ++j) {
-    		dp_[i][j] = dp_[i][j-1] + dp[i][j];
-    		dp_[i][j] %= MOD;
-    	}
-    }
+    ll n;
     ll ans = 0;
-    for (int i = 1; i <= n; ++i) {
-		ans += dp_[i][k];
-		ans %= MOD;	
+    cin >> n;
+    for (ll i = 1; i <= n; ++i) {
+        cin >> a[i];
+    }
+    for (ll i = 1; i <= n; ++i) {   
+        ll maxSoFar = a[i];
+        for (ll j = i + 1; j <= n; ++j) {
+            maxSoFar = max(maxSoFar,a[j]);
+            if(a[i]*a[j] <= maxSoFar) ans++;
+        }
     }
     cout << ans << endl;
     return 0;

@@ -27,6 +27,10 @@ struct debugger dbg;
 #define fill(a,v)               memset(a,v,sizeof a)
 #define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
+#define MOD                     1000000007LL
+#define INF 					INT_MAX
+#define N                     	100007
+
 
 typedef long long int ll;
 typedef pair<int,int> PII;
@@ -43,18 +47,38 @@ int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 int n,m,b,mod;
 int a[505];
-int dp[505][505][505];
+int dp[2][505][505];
 
-int numWays(int idx,int lines,int allowed) {
-	if(allowed == 0)
-}
 
 int main()
 {
-    cin >> n >> m >> b >> mod;
-    for (int i = 1; i <= n; ++i) {
-    	cin >> a[i];
-    }
-    cout << numWays(1,m,b) << endl;
+	cin >> n >> m >> b >> mod;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+	}
+	int cur = 1;
+	for (int i = 0; i <= m; ++i) {
+		for (int j = 0; j <= b; ++j) {
+			dp[0][i][j] = (i*a[1] <= j ? 1 : 0);
+			dp[0][i][j] %= mod;
+		}
+	}
+	for (int i = 2; i <= n; ++i) {
+		for (int j = 0; j <= m; ++j) {
+			for (int k = 0; k <= b; ++k) {
+				if(j == 0) {
+					dp[cur][j][k] = 1;
+					continue;
+				}
+				dp[cur][j][k] = 0;
+				dp[cur][j][k] = dp[rem(cur-1,2)][j][k];
+				if(k >= a[i]) dp[cur][j][k] += dp[cur][j-1][k - a[i]];
+				dp[cur][j][k] %= mod;		
+			}
+		}
+		cur++;
+		cur %= 2;
+	}
+	cout << dp[rem(cur-1,2)][m][b] << endl;
     return 0;
 }

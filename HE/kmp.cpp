@@ -2,6 +2,12 @@
 
 using namespace std;
 
+#ifndef ONLINE_JUDGE
+#include "../debug.hpp"
+struct debugger dbg;
+#else 
+#define debug(args...)              // Just strip off all debug tokens
+#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -27,7 +33,6 @@ using namespace std;
 
 
 typedef long long int ll;
-typedef long double ld;
 typedef pair<int,int> PII;
 typedef pair<ll,ll> PLL;
 typedef vector<string> VS;
@@ -41,57 +46,50 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
+int ans;
+int lps[N];
+string P,T;
 
 
+void buildLPS() {
+    lps[0] = 0;
+    for (int i = 1; i < P.size(); ++i) {
+    	int cur = lps[i-1];
+    	while(P[cur] != P[i] && cur != 0) {
+    		cur = lps[cur - 1];
+    	}
+    	if(cur == 0) {
+    		lps[i] = (P[cur] == P[i] ? 1 : 0);
+    	}
+    	else {
+    		lps[i] = cur + 1;
+    	}
+    }
+    return;
+}
 
-ld polls[4100][4100];
-
-inline void Refresh() {
-    for(int i = 0; i < 4010; i++) {
-		for(int j = 0 ; j < 4010; j++)
-			polls[i][j] = 0;
+void solve() {
+	int target = 0;
+	for (int i = 0; i < T.size(); ++i) {
+		while(T[i] != P[target] && target != 0) {
+			target = lps[target - 1];
+		}
+		if(T[i] == P[target]) target++;
+		if(target == P.size()) {
+			ans++;
+			target = lps[P.size() - 1];
+		}
 	}
 	return;
 }
 
 
-
 int main()
 {
-	ll n,m,t;
-	freopen("in.txt", "r", stdin);
-	cin >> t;
-	int testcase = 1;
-	while(t--) {
-		Refresh();
-		printf("Case #%d: ",testcase);
-		testcase++;
-		cin >> n >> m;
-		
-		if(m == 0) {
-			printf("1.0000000000\n");
-			continue;
-		}
-		polls[1][1] = n;
-		polls[1][1] /= (ld)(m+n);
-		for(int i = 1;i < m + n; i++) {
-			for(int j = 1;j <= n; j++) {
-				if(j > i) continue;
-				ll A = i+j;
-				ll B = i-j;
-				if(A % 2 == 1 || B%2 == 1 || B < 0) continue;
-				A /= 2;
-				B /= 2;
-				ll x1 = n-A;
-				ll x2 = m-B;
-				if(x1 > n || x1 < 0 || x2 > m || x2 < 0) continue;
-				ll sum3 = x1+x2;
-				polls[i+1][j+1] += polls[i][j]*(x1)/(ld)sum3;
-				polls[i+1][j-1] += polls[i][j]*(x2)/(ld)sum3;
-			}
-		}
-		printf("%.9Lf\n",polls[m+n][n-m]);
-	}
-
-	return 0;
+    cin >> P;
+    cin >> T;
+    buildLPS();
+    solve();
+    cout << ans << endl;
+    return 0;
 }
