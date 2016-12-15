@@ -19,10 +19,9 @@ struct debugger dbg;
 #define pi(i)                   printf("%d\n",i)
 #define plli(i)                 printf("%I64d\n",i)
 
-#define rep(i,a,b)				for(int i = (a); (i) <= (b); (i)++)
-#define per(i,a,b)				for(int i = (a); (i) >= (b); (i)--)
-#define reps(i,a,b,s)			for(int i = (a); (i) <= (b); i += (s))
-#define pers(i,a,b,s)			for(int i = (a); (i) >= (b); i -= (s))
+#define	forup(i,a,b) 			for(int i = (a); (i) < (b); ++(i))
+#define fordn(i,a,b) 			for(int i = (a); (i) > (b); --(i))
+#define rep(i,a) 				for(int i = 0; (i) < (a); ++(i))
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -53,43 +52,59 @@ int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
 
+VI one,two;
+bool isSame[N];
+string s_one,s_two;
+int lps_one[N],lps_two[N];
+bool is_div_one[N],is_div_two[N];
 
-
-inline void Refresh() {
-    
+void preProcess() {
+	lps_one[0] = 0;
+	for (int i = 1; i < s_one.size(); ++i) {
+		int last = lps_one[i-1];
+		while(s_one[last] != s_one[i] && last != 0) {
+			last = lps_one[last-1];
+		}
+		if(last == 0) lps_one[i] = (s_one[last] != s_one[i] ? 0 : 1);
+		else lps_one[i] = last + 1;
+	}
+	lps_two[0] = 0;
+	for (int i = 1; i < s_two.size(); ++i) {
+		int last = lps_two[i-1];
+		while(s_two[last] != s_two[i] && last != 0) {
+			last = lps_two[last-1];
+		}
+		if(last == 0) lps_two[i] = (s_two[last] != s_two[i] ? 0 : 1);
+		else lps_two[i] = last + 1;
+	}
+	return;
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
-
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	int ans = 0;
+	cin >> s_one;
+	cin >> s_two;
+	preProcess();
+	int idx = s_one.size() - 1;
+	while(idx > 0) {
+		int len = lps_one[idx];
+		if(s_one.size() % (s_one.size() - len) == 0) is_div_one[s_one.size() - len - 1] = true;
+		idx = lps_one[idx] - 1;
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	idx = s_two.size() - 1;
+	while(idx > 0) {
+		int len = lps_two[idx];
+		if(s_two.size() % (s_two.size() - len) == 0) is_div_two[s_two.size() - len - 1] = true;
+		idx = lps_two[idx] - 1;
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
-		}
+	is_div_one[s_one.size() - 1] = true;
+	is_div_two[s_two.size() - 1] = true;
+	for (int i = 0; i < min(s_one.size(),s_two.size()); ++i) {
+		if(s_one[i] != s_two[i]) break;
+		if(is_div_one[i] && is_div_two[i]) ans++;
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << ans << endl;
     return 0;
 }

@@ -59,37 +59,24 @@ inline void Refresh() {
     
 }
 
-
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
+map<ll,ll> cnt;
 
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
+	ll n,x,tmp;
+	VL A;
+	ll ans = 0;
+	cin >> n >> x;
+	for (ll i = 0; i < n; ++i) {
+		cin >> tmp;
 		A.pb(tmp);
+		cnt[tmp]++;
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	for (ll i = 0; i < A.size(); ++i) {
+		ll req = A[i]^x;
+		ans += cnt[req];
+		if(req == A[i]) ans--;
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
-		}
-	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << ans/2 << endl;
     return 0;
 }

@@ -19,10 +19,9 @@ struct debugger dbg;
 #define pi(i)                   printf("%d\n",i)
 #define plli(i)                 printf("%I64d\n",i)
 
-#define rep(i,a,b)				for(int i = (a); (i) <= (b); (i)++)
-#define per(i,a,b)				for(int i = (a); (i) >= (b); (i)--)
-#define reps(i,a,b,s)			for(int i = (a); (i) <= (b); i += (s))
-#define pers(i,a,b,s)			for(int i = (a); (i) >= (b); i -= (s))
+#define	forup(i,a,b) 			for(int i = (a); (i) < (b); ++(i))
+#define fordn(i,a,b) 			for(int i = (a); (i) > (b); --(i))
+#define rep(i,a) 				for(int i = 0; (i) < (a); ++(i))
 
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
@@ -51,45 +50,56 @@ int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
+int aFreq[26];
+int pFreq[26];
+int qCnt;
+int ans;
+string a,p;
 
 
 
 
-inline void Refresh() {
-    
+inline void initialise() {
+    fill(pFreq,0);
+	fill(aFreq,0);
+}
+
+void validateAndDecide() {
+	bool isGood = true;
+	int aCnt = 0;
+	int pCnt = 0;
+	for (int i = 0; i < 26; ++i) {
+		isGood = (isGood && (aFreq[i] <= pFreq[i]));
+		aCnt += aFreq[i];
+		pCnt += pFreq[i];
+	}
+	// cout << aCnt << " " << qCnt << " " << pCnt << endl;
+	isGood = (isGood && ((aCnt + qCnt) == pCnt));
+	if(isGood) ans++;
+	return;
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
-
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	initialise();
+	cin >> a;
+	cin >> p;
+	for (int i = 0; i < p.size(); ++i) {
+		pFreq[p[i] - 'a']++;
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	for (int i = 0; i < min(p.size() - 1,a.size()); ++i) {
+		if(a[i] != '?') aFreq[a[i] - 'a']++;
+		else qCnt++;
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
-		}
+	for (int i = p.size() - 1; i < a.size(); ++i) {
+		// cout << a[i] << " ";
+		if(a[i] == '?') qCnt++;
+		else aFreq[a[i] - 'a']++;
+		validateAndDecide();
+		if(a[i - p.size() + 1] == '?') qCnt--;
+		else aFreq[a[i - p.size() + 1] - 'a']--;
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << ans << endl;
     return 0;
 }

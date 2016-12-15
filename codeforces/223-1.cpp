@@ -60,36 +60,38 @@ inline void Refresh() {
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
-
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	int n;
+	int a[1005];
+	int sereja = 0,dima = 0;
+	cin >> n;
+	int lft = 0,ryt = n - 1;
+	for (int i = 0; i < n; ++i) {
+		cin >> a[i];
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
-	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
+	for (int i = 0; i < n; ++i) {
+		if(i%2 == 0) {
+			if(a[lft] > a[ryt]) {
+				sereja += a[lft];
+				lft++;
+			}
+			else {
+				sereja += a[ryt];
+				ryt--;
+			}
+		}
+		else {
+			if(a[lft] > a[ryt]) {
+				dima += a[lft];
+				lft++;
+			}
+			else {
+				dima += a[ryt];
+				ryt--;
 			}
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << sereja << " " << dima << endl;
     return 0;
 }

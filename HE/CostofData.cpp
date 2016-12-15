@@ -47,54 +47,78 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
-
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-template<class T> inline vector<pair<T, int> > factorize(T n)
-{
-    vector<pair<T, int> > R;
-    for (T i = 2; n > 1;) {
-        if (n % i == 0) {
-            int C = 0;
-            for (; n % i == 0; C++, n /= i);
-            R.push_back(make_pair(i, C));
+
+ll answer;
+
+
+
+#define CHILDREN             26
+
+
+class TrieNode {
+public:
+    int prefixes;
+    TrieNode* children[CHILDREN];
+    // Initialize your data structure here.
+    TrieNode() {
+    	answer++;
+        prefixes = 0;
+        for (int i = 0; i < CHILDREN; i++){
+            children[i] = NULL;
         }
-        i++;
-        if (i > n / i) i = n;
     }
-    if (n > 1) R.push_back(make_pair(n, 1));
-    return R;
-}
+};
 
 
-ll PollardRho(ll number) {
-	ll x_fixed = 2, cycle_size = 2, x = 2, factor = 1;
+class Trie {
+public:
+    TrieNode* root;
+    deque<char> Q;
+    Trie() {
+        root = new TrieNode();
+        root->prefixes = 1;
+    }
 
-	while (factor == 1) {
-		for (ll count = 1;count <= cycle_size && factor <= 1; count++) {
-			x = (x*x+1)%number;
-			factor = __gcd(x - x_fixed, number);
-		}
-		cycle_size *= 2;
-		x_fixed = x;
-	}
-	return factor;
-}
+    // Inserts a word into the trie.
+    void insert(string word) {
+        TrieNode* tmp = root;
+        for (int i = 0; i < word.size(); ++i) {
+            tmp->prefixes++;
+            if(tmp->children[word[i]-'a'] == NULL) {
+                tmp->children[word[i]-'a'] = new TrieNode();
+            }
+            tmp = tmp->children[word[i]-'a'];
+        }
+        tmp->prefixes++;
+        return;
+    }
+
+    //remove one occurance of the word
+    void removeWord(string word) {
+        TrieNode* current = root;
+        current->prefixes--;
+        for (int i = 0; i < word.size(); ++i) {
+            current = current->children[word[i] - 'a'];
+            current->prefixes--;
+        }
+        return;
+    }
+};
+
 
 int main()
 {
-	// cout << PollardRho(100);
-	ll n;
-	cin >> n;
-	// while(n > 1) {
-	// 	ll tmp = PollardRho(n);
-	// 	if(tmp == -1) tmp = n;
-	// 	n = n/tmp;
-	// 	cout << tmp << endl;
-	// 	// cin >> tmp;
-	// }
-	cout << factorize(n);
-	return 0;
+    Trie T;
+    int n;
+    string tmp;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+    	cin >> tmp;
+    	T.insert(tmp);
+    }
+    cout << answer << endl;
+    return 0;
 }

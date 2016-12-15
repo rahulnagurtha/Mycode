@@ -19,11 +19,6 @@ struct debugger dbg;
 #define pi(i)                   printf("%d\n",i)
 #define plli(i)                 printf("%I64d\n",i)
 
-#define rep(i,a,b)				for(int i = (a); (i) <= (b); (i)++)
-#define per(i,a,b)				for(int i = (a); (i) >= (b); (i)--)
-#define reps(i,a,b,s)			for(int i = (a); (i) <= (b); i += (s))
-#define pers(i,a,b,s)			for(int i = (a); (i) >= (b); i -= (s))
-
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
 #define FF                      first
@@ -59,37 +54,24 @@ inline void Refresh() {
     
 }
 
+set<string> data;
+vector<string> A;
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
 
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
+	int n;
+	string tmp;
+	cin >> n;
+	for (int i = 0; i < n; ++i) {
+		cin >> tmp;
 		A.pb(tmp);
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
-	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
+	for (int i = A.size() - 1; i >= 0; --i) {
+		if(data.find(A[i]) == data.end()) {
+			data.insert(A[i]);
+			cout << A[i] << endl;
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
     return 0;
 }

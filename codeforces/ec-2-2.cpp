@@ -60,36 +60,36 @@ inline void Refresh() {
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
-
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
+	int n,m,tmp;
+	int ans[2*N + 3];
+	cin >> n >> m;
+	VI A;
+	VOII B;
+	fill(ans,0);
+	for (int i = 0; i < n; ++i) {
+		cin >> tmp;
 		A.pb(tmp);
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	for (int i = 0; i < m; ++i) {
+		cin >> tmp;
+		B.pb(mp(tmp,i));
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
+	sort(A.begin(), A.end());
+	sort(B.begin(), B.end());
+	int lft = 0;
+	int ryt = 0;
+	while(lft <= n && ryt < m) {
+		if(lft < n && A[lft] <= B[ryt].FF) lft++;
+		else {
+			ans[B[ryt].SS] = lft;
+			ryt++;
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	for (int i = 0; i < m; ++i) {
+		cout << ans[i] << " ";
+	}
+	cout << endl;
     return 0;
 }

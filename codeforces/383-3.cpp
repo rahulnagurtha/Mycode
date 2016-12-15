@@ -54,42 +54,53 @@ int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
 
+ll nxt[105];
+ll dist[105];
+bool visited[105];
+VL A;
 
-inline void Refresh() {
-    
+
+void dfs(ll cur,ll dis) {
+	dist[cur] = dis;
+	if(visited[cur]) {
+		return;
+	}
+	visited[cur] = true;
+	if(dis == INF) dfs(nxt[cur],1);
+	else dfs(nxt[cur],dis+1);
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
+ll lcm() {
+	ll res = 1;
+	for (ll i = 0; i < A.size(); i++) {
+		res = res*A[i]/__gcd(res,A[i]);
+	}
+	return res;
+}
 
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	
+	ll n;
+	cin >> n;
+	for (ll i = 1; i <= n; ++i) {
+		cin >> nxt[i];
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	for (ll i = 0; i < 105; ++i) {
+		dist[i] = INF;
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
+	for (ll i = 1; i <= n; ++i) {
+		if(!visited[i]) {
+			dfs(i,INF);
+			if(dist[i] == INF) {
+				cout << "-1" << endl;
+				return 0;
 			}
+			if(dist[i] % 2 == 0) A.pb(dist[i]/2);
+			else A.pb(dist[i]);
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << lcm() << endl;
     return 0;
 }

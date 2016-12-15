@@ -60,36 +60,19 @@ inline void Refresh() {
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
-
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	int n;
+	cin >> n;
+	string a;
+	cin >> a;
+	int ant = 0,dan = 0;
+	for (int i = 0; i < a.size(); ++i) {
+		if(a[i] == 'A') ant++;
+		else dan++;
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
-	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
-		}
-	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	if(ant > dan) cout << "Anton" << endl;
+	else if(dan > ant) cout << "Danik" << endl;
+	else cout << "Friendship" << endl;
     return 0;
 }

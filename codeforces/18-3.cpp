@@ -52,44 +52,23 @@ int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
 
-
-
-
-inline void Refresh() {
-    
-}
-
-
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
+int n;
+int a[N];
+int preSum[N];
 
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	int ans = 0;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+		preSum[i] = preSum[i-1] + a[i];
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	for (int i = 1; i < n; ++i) {
+		int lft = preSum[i];
+		int ryt = preSum[n] - preSum[i];
+		if(lft == ryt) ans++;
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
-		}
-	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << ans << endl;
     return 0;
 }

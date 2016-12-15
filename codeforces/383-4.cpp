@@ -34,7 +34,7 @@ struct debugger dbg;
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
 #define INF 					INT_MAX
-#define N                     	100007
+#define N                     	1007
 
 
 typedef long long int ll;
@@ -59,37 +59,83 @@ inline void Refresh() {
     
 }
 
+ll n,m,w;
+VL adj[N];
+ll weight[N];
+ll beauty[N];
+ll dp[N][N];
+VOLL moota[N];
+bool visited[N];
+ll totalComp;
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
+ll recurse(ll maxWeight,ll till) {
+	if(till == 0) return 0;
+	if(dp[maxWeight][till] != -1) return dp[maxWeight][till];
+	dp[maxWeight][till] = 0;
+	for (int i = 0; i < moota[till].size(); ++i) {
+		if(maxWeight >= moota[till][i].FF) {
+			ll tmp = moota[till][i].SS + recurse(maxWeight - moota[till][i].FF,till-1);
+			dp[maxWeight][till] = max(dp[maxWeight][till],tmp);
+		}
+	}
+	dp[maxWeight][till] = max(dp[maxWeight][till],recurse(maxWeight,till-1));
+	return dp[maxWeight][till];
+}
+
+void dfs(ll cur,ll comp) {
+	moota[comp].pb(mp(weight[cur],beauty[cur]));
+	visited[cur] = true;
+	for (int i = 0; i < adj[cur].size(); ++i) {
+		ll nxt = adj[cur][i];
+		if(!visited[nxt]) {
+			dfs(nxt,comp);
+		}
+	}
+}
+
+void process() {
+	fill(dp,-1);
+	for (ll i = 1; i <= totalComp; ++i) {
+		ll wtSum = 0;
+		ll beautySum = 0;
+		for (int j = 0; j < moota[i].size(); ++j) {
+			wtSum += moota[i][j].FF;
+			beautySum += moota[i][j].SS;
+		}
+		moota[i].pb(mp(wtSum,beautySum));
+		// cout << moota[i] << endl;
+	}
+	return;
+}
 
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
+	ll u,v;
+	slli3(n,m,w);
+	
+	// cin >> n >> m >> w;
+	for (int i = 1; i <= n; ++i) {
+		slli(weight[i]);
+		// cin >> weight[i];
 	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
+	for (int i = 1; i <= n; ++i) {
+		slli(beauty[i]);
+		// cin >> beauty[i];
 	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
+	for (int i = 0; i < m; ++i) {
+		slli2(u,v);
+		// cin >> u >> v;
+		adj[u].pb(v);
+		adj[v].pb(u);
+	}
+	for (int i = 1; i <= n; ++i) {
+		if(!visited[i]) {
+			totalComp++;
+			dfs(i,totalComp);
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	process();
+	plli(recurse(w,totalComp));
+	// cout << recurse(w,totalComp) << endl;
     return 0;
 }

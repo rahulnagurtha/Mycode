@@ -2,12 +2,7 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
+
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -47,54 +42,45 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
-
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-template<class T> inline vector<pair<T, int> > factorize(T n)
-{
-    vector<pair<T, int> > R;
-    for (T i = 2; n > 1;) {
-        if (n % i == 0) {
-            int C = 0;
-            for (; n % i == 0; C++, n /= i);
-            R.push_back(make_pair(i, C));
-        }
-        i++;
-        if (i > n / i) i = n;
-    }
-    if (n > 1) R.push_back(make_pair(n, 1));
-    return R;
-}
 
 
-ll PollardRho(ll number) {
-	ll x_fixed = 2, cycle_size = 2, x = 2, factor = 1;
+VL primes;
 
-	while (factor == 1) {
-		for (ll count = 1;count <= cycle_size && factor <= 1; count++) {
-			x = (x*x+1)%number;
-			factor = __gcd(x - x_fixed, number);
+
+void process() {
+	bool isPrime[N];
+	fill(isPrime,true);
+
+	isPrime[1] = false;
+	for (int i = 2; i < N; ++i) {
+		if(!isPrime[i]) continue;
+		primes.pb(i);
+		for (int j = i + i; j < N; j += i) {
+			isPrime[j] = false;
 		}
-		cycle_size *= 2;
-		x_fixed = x;
 	}
-	return factor;
+	return;
 }
 
 int main()
 {
-	// cout << PollardRho(100);
-	ll n;
-	cin >> n;
-	// while(n > 1) {
-	// 	ll tmp = PollardRho(n);
-	// 	if(tmp == -1) tmp = n;
-	// 	n = n/tmp;
-	// 	cout << tmp << endl;
-	// 	// cin >> tmp;
-	// }
-	cout << factorize(n);
-	return 0;
+    process();
+    int t;
+    // freopen("in.txt", "r", stdin);
+    cin >> t ;
+    while(t--) {
+    	ll n;
+    	ll ans = 0;
+    	cin >> n;
+    	for (int i = 0; i < primes.size(); ++i) {
+    		if(primes[i] > n) break;
+    		ans = i + 1;
+    	}
+    	if(ans % 2 == 1) cout << "Alice" << endl;
+    	else cout << "Bob" << endl;
+    }
+    return 0;
 }

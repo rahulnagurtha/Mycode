@@ -1,30 +1,25 @@
-import itertools
+from urllib2 import Request, urlopen, URLError
+import json
 
-all_edges = list(itertools.combinations(range(1,8), 2))
-space = []
+ 
 
-for x in xrange(1,8):
-  space = space + list(itertools.combinations(all_edges, x))
+request = Request('http://codeforces.com/api/user.status?handle=sumeet.varma&from=1&count=1750')
 
-print space[101814]
+import datetime
 
-# t = len(space)
-# f = open('bruteout.txt', 'w')
-# f.write(str(t) + '\n')
+dict = {}
 
-# for edges in space:
-#   # f.write('7' + ' ' + str(len(edges)) + '\n')
-#   # for edge in edges:
-#   #   f.write(str(edge[0]) + ' ' + str(edge[1]) + '\n')
-#   # f.close()
-#   ans = 0
-#   for x in list(itertools.permutations(range(1,8))):
-#     flag = 0
-#     for y in xrange(6):
-#       if( (tuple((x[y],x[y+1])) in edges) or (tuple((x[y+1],x[y])) in edges)):
-#         flag = 1
-#         break
-#     if flag == 0:
-#       ans += 1
-#   f.write(str(ans) + '\n')
-# f.close()
+try:
+	response = urlopen(request)
+	kittens = response.read()
+	converted = json.loads(kittens)
+	# print len(converted)
+	for x in xrange(0,1750):
+		curVal = converted['result'][x]['creationTimeSeconds']
+		temp = datetime.datetime.fromtimestamp(curVal).strftime('%Y-%m')
+		dict[temp] = dict.get(temp, 0) + 1
+except URLError, e:
+    print 'No kittez. Got an error code:', e
+
+
+print dict

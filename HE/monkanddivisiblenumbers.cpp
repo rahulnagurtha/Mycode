@@ -47,17 +47,34 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
-
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-template<class T> inline vector<pair<T, int> > factorize(T n)
+
+ll fast_exp(ll x, ll y)
 {
-    vector<pair<T, int> > R;
+    ll res = 1;     // Initialize result
+  
+    while (y > 0) {
+        // If y is odd, multiply x with result
+        if (y & 1) {
+            res = res*x;
+            res %= MOD;
+        }
+        // n must be even now
+        y = y >> 1; // y = y/2
+        x = x*x;  // Change x to x^2
+    	x %= MOD;
+    }
+    return res;
+}
+
+template<class T> inline vector<pair<T, ll> > factorize(T n)
+{
+    vector<pair<T, ll> > R;
     for (T i = 2; n > 1;) {
         if (n % i == 0) {
-            int C = 0;
+            ll C = 0;
             for (; n % i == 0; C++, n /= i);
             R.push_back(make_pair(i, C));
         }
@@ -69,32 +86,35 @@ template<class T> inline vector<pair<T, int> > factorize(T n)
 }
 
 
-ll PollardRho(ll number) {
-	ll x_fixed = 2, cycle_size = 2, x = 2, factor = 1;
-
-	while (factor == 1) {
-		for (ll count = 1;count <= cycle_size && factor <= 1; count++) {
-			x = (x*x+1)%number;
-			factor = __gcd(x - x_fixed, number);
-		}
-		cycle_size *= 2;
-		x_fixed = x;
-	}
-	return factor;
-}
 
 int main()
 {
-	// cout << PollardRho(100);
-	ll n;
-	cin >> n;
-	// while(n > 1) {
-	// 	ll tmp = PollardRho(n);
-	// 	if(tmp == -1) tmp = n;
-	// 	n = n/tmp;
-	// 	cout << tmp << endl;
-	// 	// cin >> tmp;
-	// }
-	cout << factorize(n);
-	return 0;
+    int t;
+    // freopen("in.txt", "r", stdin);
+    cin >> t ;
+    while(t--) {
+    	ll a,b,c;
+    	cin >> a >> b >> c;
+    	VOLL A = factorize(a);
+    	VOLL B = factorize(b);
+    	for (int i = 0; i < B.size(); ++i) {
+    		B[i].SS *= c;
+    	}
+    	// cout << A << endl;
+    	// cout << B << endl;
+    	for (int i = 0; i < A.size(); ++i) {
+    		for (int j = 0; j < B.size(); ++j) {
+    			if(A[i].FF == B[j].FF) {
+    				B[j].SS -= A[i].SS;
+    			}
+    		}
+    	}
+    	ll ans = 1;
+    	for (int i = 0; i < B.size(); ++i) {
+    		ans = ans*fast_exp(B[i].FF,B[i].SS);
+    		ans %= MOD;
+    	}
+    	cout << ans << endl;
+    }
+    return 0;
 }

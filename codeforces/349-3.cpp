@@ -19,11 +19,6 @@ struct debugger dbg;
 #define pi(i)                   printf("%d\n",i)
 #define plli(i)                 printf("%I64d\n",i)
 
-#define rep(i,a,b)				for(int i = (a); (i) <= (b); (i)++)
-#define per(i,a,b)				for(int i = (a); (i) >= (b); (i)--)
-#define reps(i,a,b,s)			for(int i = (a); (i) <= (b); i += (s))
-#define pers(i,a,b,s)			for(int i = (a); (i) >= (b); i -= (s))
-
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
 #define FF                      first
@@ -34,7 +29,7 @@ struct debugger dbg;
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
 #define INF 					INT_MAX
-#define N                     	100007
+#define N                     	10007
 
 
 typedef long long int ll;
@@ -59,37 +54,40 @@ inline void Refresh() {
     
 }
 
-
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
+bool dp[2][N];
+set<string> ans;
 
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
-	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
-	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
-				}
-			}
+	// SYNC;
+	string a;
+	cin >> a;
+	dp[0][a.size() - 2] = true;
+	dp[1][a.size() - 3] = true;
+	if(a.size() - 2 >= 5) ans.insert(a.substr(a.size() - 2));
+	if(a.size() - 3 >= 5) ans.insert(a.substr(a.size() - 3));
+	for (int i = a.size() - 4; i >= 5; --i) {
+		//fill length 2 from i
+		if(a.substr(i,2) != a.substr(i+2,2) && (dp[0][i+2])) {
+			dp[0][i] = true;
+			ans.insert(a.substr(i,2));
+		}
+		if(dp[1][i+2]) {
+			dp[0][i] = true;
+			ans.insert(a.substr(i,2));
+		}
+		if(a.substr(i,3) != a.substr(i+3,3) && (dp[1][i+3])) {
+			dp[1][i] = true;
+			ans.insert(a.substr(i,3));
+		}
+		if(dp[0][i+3]) {
+			dp[1][i] = true;
+			ans.insert(a.substr(i,3));
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << ans.size() << endl;
+	for (auto it = ans.begin(); it != ans.end(); ++it) {
+		cout << *it << endl;
+	}
     return 0;
 }

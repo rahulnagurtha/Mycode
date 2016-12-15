@@ -19,6 +19,11 @@ struct debugger dbg;
 #define pi(i)                   printf("%d\n",i)
 #define plli(i)                 printf("%I64d\n",i)
 
+#define rep(i,a,b)				for(int i = (a); (i) <= (b); (i)++)
+#define per(i,a,b)				for(int i = (a); (i) >= (b); (i)--)
+#define reps(i,a,b,s)			for(int i = (a); (i) <= (b); i += (s))
+#define pers(i,a,b,s)			for(int i = (a); (i) >= (b); i -= (s))
+
 #define SYNC                    ios_base::sync_with_stdio(0)
 #define mp                      make_pair
 #define FF                      first
@@ -28,6 +33,9 @@ struct debugger dbg;
 #define ceil(a,b)               (((a)%(b)==0)?((a)/(b)):((a)/(b)+1))
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
+#define INF 					INT_MAX
+#define N                     	100007
+
 
 typedef long long int ll;
 typedef pair<int,int> PII;
@@ -42,35 +50,18 @@ typedef vector<VI> VOVI;
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-int n,m;
-int l,r;
-int till;
-int a[100005];
-int decTill[100005];
-int incTill[100005];
+
+
+
+
+
+inline void Refresh() {
+    
+}
+
 
 int main()
 {
-	cin >> n >> m;
-	for (int i = 1; i <= n; ++i) {
-		cin >> a[i];
-	}
-	decTill[n] = n;
-	incTill[n] = n;
-	for (int i = n-1; i > 0; --i) {
-		if(a[i+1] >= a[i]) incTill[i] = incTill[i+1];
-		else incTill[i] = i;
-		if(a[i+1] <= a[i]) decTill[i] = decTill[i+1];
-		else decTill[i] = i;
-	}
-	for (int i = 0; i < m; ++i) {
-		cin >> l >> r;
-		till = incTill[l];
-		if(till >= r) printf("Yes\n");
-		else {
-			if(decTill[till] >= r) printf("Yes\n");
-			else printf("No\n");
-		}
-	}
+	
     return 0;
 }

@@ -2,12 +2,6 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -34,7 +28,7 @@ struct debugger dbg;
 #define rem(a,b)                ((a<0)?((((a)%(b))+(b))%(b)):((a)%(b)))
 #define MOD                     1000000007LL
 #define INF                     INT_MAX
-#define N                       100007
+#define N                       1000007
 
 
 typedef long long int ll;
@@ -47,54 +41,51 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
-
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-template<class T> inline vector<pair<T, int> > factorize(T n)
-{
-    vector<pair<T, int> > R;
-    for (T i = 2; n > 1;) {
-        if (n % i == 0) {
-            int C = 0;
-            for (; n % i == 0; C++, n /= i);
-            R.push_back(make_pair(i, C));
-        }
-        i++;
-        if (i > n / i) i = n;
-    }
-    if (n > 1) R.push_back(make_pair(n, 1));
-    return R;
+
+
+
+
+inline void Refresh() {
+    
 }
 
+ll numZeroes[N];
 
-ll PollardRho(ll number) {
-	ll x_fixed = 2, cycle_size = 2, x = 2, factor = 1;
-
-	while (factor == 1) {
-		for (ll count = 1;count <= cycle_size && factor <= 1; count++) {
-			x = (x*x+1)%number;
-			factor = __gcd(x - x_fixed, number);
+void preproces() {
+	numZeroes[0] = 1;
+	for (ll i = 1; i < N; ++i) {
+		ll twos = 0;
+		ll fives = 0;
+		ll cur = i;
+		while(cur%2 == 0) {
+			twos++;
+			cur = cur/2;
 		}
-		cycle_size *= 2;
-		x_fixed = x;
+		while(cur%5 == 0) {
+			fives++;
+			cur = cur/5;
+		}
+		numZeroes[i] = min(twos,fives);
 	}
-	return factor;
+	return;
 }
 
 int main()
 {
-	// cout << PollardRho(100);
-	ll n;
-	cin >> n;
-	// while(n > 1) {
-	// 	ll tmp = PollardRho(n);
-	// 	if(tmp == -1) tmp = n;
-	// 	n = n/tmp;
-	// 	cout << tmp << endl;
-	// 	// cin >> tmp;
-	// }
-	cout << factorize(n);
-	return 0;
+	preproces();
+    ll t;
+    cin >> t ;
+    while(t--) {
+    	ll n;
+    	cin >> n;
+    	ll ans = 0;
+    	for (ll i = 0; i <= n; ++i) {
+    		ans += numZeroes(i);
+    	}
+    	cout << ans << endl;
+    }
+    return 0;
 }

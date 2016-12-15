@@ -2,12 +2,6 @@
 
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-#include "../debug.hpp"
-struct debugger dbg;
-#else 
-#define debug(args...)              // Just strip off all debug tokens
-#endif
 
 #define si(i)                   scanf("%d",&i)
 #define si2(i,j)                scanf("%d %d",&i,&j)
@@ -47,54 +41,58 @@ typedef vector<PII> VOII;
 typedef vector<PLL> VOLL;
 typedef vector<VI> VOVI;
 
-
-
 int dX[] = {-1,0,1,0,-1,1,1,-1};
 int dY[] = {0,1,0,-1,1,1,-1,-1};
 
-template<class T> inline vector<pair<T, int> > factorize(T n)
-{
-    vector<pair<T, int> > R;
-    for (T i = 2; n > 1;) {
-        if (n % i == 0) {
-            int C = 0;
-            for (; n % i == 0; C++, n /= i);
-            R.push_back(make_pair(i, C));
-        }
-        i++;
-        if (i > n / i) i = n;
-    }
-    if (n > 1) R.push_back(make_pair(n, 1));
-    return R;
+
+
+
+
+inline void Refresh() {
+    
 }
 
+int n;
+string a;
 
-ll PollardRho(ll number) {
-	ll x_fixed = 2, cycle_size = 2, x = 2, factor = 1;
+int isSafe[2*N + 5];
+bool visited[2*N+5];
 
-	while (factor == 1) {
-		for (ll count = 1;count <= cycle_size && factor <= 1; count++) {
-			x = (x*x+1)%number;
-			factor = __gcd(x - x_fixed, number);
-		}
-		cycle_size *= 2;
-		x_fixed = x;
+
+int dfs(int cur) {
+	if(cur < 0 || cur >= n) return 0;
+	if(visited[cur]) return isSafe[cur];
+	visited[cur] = true;
+	if(a[cur] == '<') {
+		isSafe[cur] = dfs(cur-1);
 	}
-	return factor;
+	else {
+		isSafe[cur] = dfs(cur+1);
+	}
+	return isSafe[cur];
 }
 
 int main()
 {
-	// cout << PollardRho(100);
-	ll n;
-	cin >> n;
-	// while(n > 1) {
-	// 	ll tmp = PollardRho(n);
-	// 	if(tmp == -1) tmp = n;
-	// 	n = n/tmp;
-	// 	cout << tmp << endl;
-	// 	// cin >> tmp;
-	// }
-	cout << factorize(n);
-	return 0;
+    
+    cin >> n;
+    cin >> a;
+    for (int i = 0; i < 2*N; ++i) {
+    	isSafe[i] = 1;
+    }
+    fill(visited,false);
+    for (int i = 0; i < n; ++i) {
+    	if(!visited[i]) {
+    		dfs(i);
+    	}
+    }
+    int ans = 0;
+    for (int i = 0; i < n ; ++i) {
+    	if(isSafe[i] == 0) {
+    		ans++;
+    	}
+    }
+    if(ans != 0) cout << ans << endl;
+    else cout << "Friendship" << endl;
+    return 0;
 }

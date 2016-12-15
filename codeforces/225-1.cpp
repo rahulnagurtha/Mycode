@@ -52,44 +52,44 @@ int dY[] = {0,1,0,-1,1,1,-1,-1};
 
 
 
+int n;
+char board[1005][1005];
 
 
-
-inline void Refresh() {
-    
+bool isInside(int x,int y) {
+	return (0 <= x && x < n && 0 <= y && y < n);
 }
 
 
-bool dp[1005][1005];
-ll tmp;
-VL A;
-ll n,m;
-
 int main()
 {
-	bool exists = false;
-	slli2(n,m);
-	rep(i,1,n) {
-		slli(tmp);
-		A.pb(tmp);
-	}
-	if(n > m) {
-		cout << "YES" << endl;
-		return 0;
-	}
-	for (int i = 0; i < A.size(); ++i) {
-		dp[i][A[i]%m] = true;
-		if(i != 0) {
-			for (int j = 0; j < m; ++j) {
-				if(dp[i-1][j]) {
-					dp[i][j] = true;
-					dp[i][(j + A[i]) % m] = true;
+	fill(board,'1');
+	int cnt = 0;
+	cin >> n;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			bool isSafe = true;
+			for (int k = 0; k < 4; ++k) {
+				if(isInside(i + dX[k],j + dY[k]) && board[i + dX[k]][j + dY[k]] == 'C') {
+					isSafe = false;
+					break;
 				}
+			}
+			if(isSafe) {
+				board[i][j] = 'C';
+				cnt++;
+			}
+			else {
+				board[i][j] = '.';
 			}
 		}
 	}
-	if(dp[A.size()-1][0]) exists = true;
-	if(exists) cout << "YES" << endl;
-	else cout << "NO" << endl;
+	cout << cnt << endl;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			cout << board[i][j];
+		}
+		cout << endl;
+	}
     return 0;
 }

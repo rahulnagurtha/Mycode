@@ -1,10 +1,23 @@
-length = 0
-for n in xrange(1,1000):
-	curLen = 0
-	for x in xrange(0 ,n + 1):
-		for y in xrange(0 ,n + 1):
-			if x**2 + y**2 == n**2:
-				curLen += 1
-	length = max(length,curLen)
+from urllib2 import Request, urlopen, URLError
+import json
+ 
 
-print length
+request = Request('http://codeforces.com/api/user.status?handle=rahulnagurtha&from=1&count=5')
+
+import datetime
+
+dict = {}
+
+try:
+	response = urlopen(request)
+	kittens = response.read()
+	converted = json.loads(kittens)
+	# print len(converted)
+	for x in xrange(0,5):
+		print converted['result'][x]
+		curVal = converted['result'][x]['creationTimeSeconds']
+		temp = datetime.datetime.fromtimestamp(curVal).strftime('%Y-%m-%d')
+		print converted['result'][x]['id'] ,
+		print temp
+except URLError, e:
+    print 'No kittez. Got an error code:', e
